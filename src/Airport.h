@@ -14,7 +14,7 @@ private:
     string code;
     string name;
     string city;
-    string country; // not sure about this one
+    string country;
     double latitude;
     double longitude;
     int node;
@@ -41,5 +41,21 @@ public:
     double distance(const Airport& a2);
 };
 
+struct airportHash
+{
+    // TODO
+    int operator() (const Airport& airport) const {
+        int res = 1;
+        for (char t : airport.getCode()){
+            res*=t+res;
+        }
+        return res;
+    }
+
+    // TODO
+    bool operator() (const Airport& a1, const Airport& a2) const {
+        return a1.getCode() == a2.getCode();
+    }
+};
 
 #endif //AEDPROJECT2_AIRPORT_H

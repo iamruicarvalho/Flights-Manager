@@ -14,22 +14,6 @@
 #include <set>
 #include "graph.h"
 
-struct airportHash
-{
-    // TODO
-    int operator() (const Airport& airport) const {
-        int res = 1;
-        for (char t : airport.getCode()){
-            res*=t+res;
-        }
-        return res;
-    }
-
-    // TODO
-    bool operator() (const Airport& a1, const Airport& a2) const {
-        return a1.getCode() == a2.getCode();
-    }
-};
 
 typedef unordered_set<Airport,airportHash,airportHash> airportTable;
 
@@ -37,10 +21,15 @@ class FlightManager{
     private:
         airportTable airports;
         set<Airline> airlines;
-        Graph flights = Graph(0);
+        Graph flights;
     public:
         FlightManager();
         void lerFicheiros();
+        void showAirportInfoMenu();
+        void askForAirport();
+        void askInfoToTakeFromAirport(const Airport& airport);
+        bool numberOfFlights(const Airport& airport);
+
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H

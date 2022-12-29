@@ -84,7 +84,78 @@ void FlightManager::lerFicheiros() {
     flights_file.close();
 }
 
-FlightManager::FlightManager() {
+FlightManager::FlightManager() : flights(0){}
 
+
+void FlightManager::askForAirport() {
+    cout << "What is the code of the airport that you want information about?\n";
+    string code;
+    cin >>code;
+    if (cin.fail()){
+        cin.clear();
+        cin.ignore(256,'\n');
+        code = "";
+    }
+    Airport airport(code);
+    auto airport_pointer = airports.find(airport);
+    if (airport_pointer == airports.end()) {
+        cout << "Invalid Input!\n";
+        return;
+    }
+    askInfoToTakeFromAirport(*airport_pointer);
+}
+
+void FlightManager::askInfoToTakeFromAirport(const Airport& airport) {
+    bool keepRunning = true;
+    while(keepRunning){
+        showAirportInfoMenu();
+        int option;
+        cin >> option;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(256,'\n');
+            option = 0;
+        }
+        switch (option){
+            case 1:
+                keepRunning = numberOfFlights(airport);
+                break;
+            case 2:
+                keepRunning = numberOfAirlines();
+                break;
+            case 3:
+                keepRunning = numberOfDestinies();
+                break;
+            case 4:
+                keepRunning = numberReachable();
+                break;
+            case 5:
+                return;
+            default :
+                cout << "Invalid Input!\n";
+        }
+
+    }
+}
+
+bool FlightManager::numberOfFlights(const Airport& airport) {
+    int node = airport.getNode();
+    flights
+    return flights.getFlights(node).size();
+}
+
+
+//------------------------Menus-------------------------------
+void FlightManager::showAirportInfoMenu() {
+    cout << "======================================\n";
+    cout << "| Options :                          |\n";
+    cout << "| 1- Number of flights               |\n";
+    cout << "| 2- Number of airlines with         |\n";
+    cout << "|    flights from this airport       |\n";
+    cout << "| 3- Numbers of different destinies  |\n";
+    cout << "| 4- Number of places reachable      |\n";
+    cout << "| 5- Go back                         |\n";
+    cout << "======================================\n";
+    cout << "Pick an option:";
 }
 

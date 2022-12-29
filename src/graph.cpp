@@ -51,4 +51,11 @@ void Graph::setAirport(int v, const string &airport) {
     nodes[v].airport = airport;
 }
 
+list<pair<int, string>> Graph::getFlights( int node){
+    list<pair<int, string>> res ;
+    for (const Edge& e : nodes[node].adj)
+        res.emplace_back(e.dest,e.airline);
+    return res;
+}
+
 

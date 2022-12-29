@@ -43,6 +43,7 @@ public:
 
     void setAirport(int v , const string& airport);
 
+    list<pair<int , string>> getFlights(int node);
 };
 
 #endif
