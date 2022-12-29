@@ -8,16 +8,17 @@ Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 }
 
 // Add edge from source to destination with a certain weight
-void Graph::addEdge(int src, int dest, int weight) {
+void Graph::addEdge(int src, int dest, const string& airline , int weight) {
     if (src<1 || src>n || dest<1 || dest>n) return;
-    nodes[src].adj.push_back({dest, weight});
-    if (!hasDir) nodes[dest].adj.push_back({src, weight});
+    nodes[src].adj.push_back({dest, weight,airline});
+    if (!hasDir) nodes[dest].adj.push_back({src, weight,airline});
 }
+
 
 // Depth-First Search: example implementation
 void Graph::dfs(int v) {
     // show node order
-    // cout << v << " ";
+    cout << v << " ";
     nodes[v].visited = true;
     for (auto e : nodes[v].adj) {
         int w = e.dest;
@@ -49,3 +50,5 @@ void Graph::bfs(int v) {
 void Graph::setAirport(int v, const string &airport) {
     nodes[v].airport = airport;
 }
+
+

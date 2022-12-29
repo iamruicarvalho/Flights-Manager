@@ -3,6 +3,10 @@
 //
 #include "Airport.h"
 
+Airport::Airport(string code) {
+    this->code = code;
+}
+
 Airport::Airport(string code, string name, string city, string country, double latitude, double longitude) {
     this->code = code;
     this->name = name;
@@ -10,6 +14,7 @@ Airport::Airport(string code, string name, string city, string country, double l
     this->country = country;
     this->latitude = latitude;
     this-> longitude = longitude;
+    node = 0;
 }
 
 const string &Airport::getCode() const {
@@ -74,6 +79,14 @@ double Airport::distance(const Airport & a2) {
                cos(lat1) * cos(lat2);
 
     return 6371 * 2 * asin(sqrt(a));
+}
+
+int Airport::getNode() const {
+    return node;
+}
+
+void Airport::setNode(int node) {
+    this->node = node;
 }
 
 

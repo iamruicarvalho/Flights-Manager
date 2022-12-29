@@ -17,7 +17,9 @@ private:
     string country; // not sure about this one
     double latitude;
     double longitude;
+    int node;
 public:
+    Airport(string code);
     Airport(string code , string name , string city , string country , double latitude, double longitude);
 
     const string &getCode() const;
@@ -26,6 +28,7 @@ public:
     const string &getCountry() const;
     double getLatitude() const;
     double getLongitude() const;
+    int getNode() const;
 
     void setCode(const string &code);
     void setName(const string &name);
@@ -33,6 +36,7 @@ public:
     void setCountry(const string &country);
     void setLatitude(double latitude);
     void setLongitude(double longitude);
+    void setNode(int node);
 
     double distance(const Airport& a2);
 };

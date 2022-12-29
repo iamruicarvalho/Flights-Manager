@@ -15,6 +15,7 @@ class Graph {
     struct Edge {
         int dest;   // Destination node
         int weight; // An integer weight
+        string airline;
     };
 
     struct Node {
@@ -32,7 +33,7 @@ public:
     Graph(int nodes, bool dir = false);
 
     // Add edge from source to destination with a certain weight
-    void addEdge(int src, int dest, int weight = 1);
+    void addEdge(int src, int dest,const string& airline, int weight = 1);
 
     // Depth-First Search: example implementation
     void dfs(int v);
@@ -41,6 +42,7 @@ public:
     void bfs(int v);
 
     void setAirport(int v , const string& airport);
+
 };
 
 #endif

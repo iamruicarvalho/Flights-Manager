@@ -38,7 +38,6 @@ class FlightManager{
         airportTable airports;
         set<Airline> airlines;
         Graph flights = Graph(0);
-        // unordered_set<City> cities; não sei se temos que ter isto
     public:
         FlightManager();
         void lerFicheiros();
