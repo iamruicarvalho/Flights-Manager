@@ -7,6 +7,7 @@
 #include <list>
 #include <vector>
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ class Graph {
     struct Node {
         list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
         bool visited;   // As the node been visited on a search?
+        string airport;
     };
 
     int n;              // Graph size (vertices are numbered from 1 to n)
@@ -35,18 +37,10 @@ public:
     // Depth-First Search: example implementation
     void dfs(int v);
 
-    // ----- Functions to implement in this class -----
-    int outDegree(int v);
-    int weightedOutDegree(int v);
-    int connectedComponents();
-    int giantComponent();
-    list<int> topologicalSorting();
-    bool hasCycle();
+    // Breadth-First Search: example implementation
+    void bfs(int v);
 
-    int numberOfNodesInComponent(int v);
-
-    list<int> orderStartingByV(int v);
-    bool virifyCicle(int node);
+    void setAirport(int v , const string& airport);
 };
 
 #endif

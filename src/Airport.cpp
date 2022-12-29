@@ -1,0 +1,82 @@
+//
+// Created by marco on 28/12/2022.
+//
+#include "Airport.h"
+
+Airport::Airport(string code, string name, string city, string country, double latitude, double longitude) {
+    this->code = code;
+    this->name = name;
+    this->city = city;
+    this->country = country;
+    this->latitude = latitude;
+    this-> longitude = longitude;
+}
+
+const string &Airport::getCode() const {
+    return code;
+}
+
+void Airport::setCode(const string &code) {
+    this->code = code;
+}
+
+const string &Airport::getName() const {
+    return name;
+}
+
+void Airport::setName(const string &name) {
+    this->name = name;
+}
+
+const string &Airport::getCity() const {
+    return city;
+}
+
+void Airport::setCity(const string &city) {
+    this->city = city;
+}
+
+const string &Airport::getCountry() const {
+    return country;
+}
+
+void Airport::setCountry(const string &country) {
+    this->country = country;
+}
+
+double Airport::getLatitude() const {
+    return latitude;
+}
+
+void Airport::setLatitude(double latitude) {
+    this->latitude = latitude;
+}
+
+double Airport::getLongitude() const {
+    return longitude;
+}
+
+void Airport::setLongitude(double longitude) {
+    this->longitude = longitude;
+}
+
+double Airport::distance(const Airport & a2) {
+    double dLat = (a2.latitude - latitude) *
+                  M_PI / 180.0;
+    double dLon = (a2.longitude - longitude) *
+                  M_PI / 180.0;
+
+    double lat1 = (latitude) * M_PI / 180.0;
+    double lat2 = (a2.latitude) * M_PI / 180.0;
+
+    double a = pow(sin(dLat / 2), 2) +
+               pow(sin(dLon / 2), 2) *
+               cos(lat1) * cos(lat2);
+
+    return 6371 * 2 * asin(sqrt(a));
+}
+
+
+
+
+

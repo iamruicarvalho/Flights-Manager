@@ -6,10 +6,13 @@
 #define AEDPROJECT2_FLIGHTMANAGER_H
 
 #include "Airport.h"
+#include "Airline.h"
 #include <unordered_set>
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <set>
+#include "graph.h"
 
 struct airportHash
 {
@@ -17,7 +20,7 @@ struct airportHash
     int operator() (const Airport& airport) const {
         int res = 1;
         for (char t : airport.getCode()){
-            res*=t;
+            res*=t+res;
         }
         return res;
     }
@@ -33,8 +36,11 @@ typedef unordered_set<Airport,airportHash,airportHash> airportTable;
 class FlightManager{
     private:
         airportTable airports;
+        set<Airline> airlines;
+        Graph flights = Graph(0);
         // unordered_set<City> cities; não sei se temos que ter isto
     public:
+        FlightManager();
         void lerFicheiros();
 };
 

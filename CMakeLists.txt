@@ -24,4 +24,4 @@ else(DOXYGEN_FOUND)
     message("Doxygen needs to be installed to generate the documentation.")
 endif(DOXYGEN_FOUND)
 
-add_executable(AEDproject2 main.cpp FlightManager.h FlightManager.cpp Airport.cpp Airport.h graph.cpp graph.h)
+add_executable(AEDproject2 main.cpp src/FlightManager.h src/FlightManager.cpp src/Airport.cpp src/Airport.h src/graph.cpp src/graph.h src/Airline.cpp src/Airline.h)
