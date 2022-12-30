@@ -58,4 +58,32 @@ list<pair<int, string>> Graph::getFlights( int node){
     return res;
 }
 
+string Graph::getAirport(int v) {
+    return nodes[v].airport;
+}
+
+list<string> Graph::getAirportsReachable(int v, int f) {
+    list<string> res;
+    for (int i=1; i<=n; i++) nodes[i].visited = false;
+    queue<int> q; // queue of unvisited nodes
+    q.push(v);
+    nodes[v].distance = 0;
+    nodes[v].visited = true;
+    while (!q.empty()) { // while there are still unvisited nodes
+        int u = q.front(); q.pop();
+        if (nodes[u].distance >f) break;
+        res.push_back(nodes[u].airport);
+        for (auto e : nodes[u].adj) {
+            int w = e.dest;
+            if (!nodes[w].visited) {
+                nodes[w].distance = nodes[u].distance +1;
+                q.push(w);
+                nodes[w].visited = true;
+            }
+        }
+    }
+    res.pop_front();
+    return res;
+}
+
 

@@ -30,6 +30,21 @@ class FlightManager{
         void askInfoToTakeFromAirport(const Airport& airport);
         bool numberOfFlights(const Airport& airport);
 
+    bool numberOfAirlines(const Airport &airport);
+
+    bool numberOfDestinies(const Airport &airport);
+
+    bool numberOfDestinyCountries(const Airport &airport);
+
+    bool numberReachable(const Airport &airport);
+
+    void askWhichPlaceMenu();
+
+    bool airportsReachable(const Airport &airport, int number_of_flights);
+
+    bool citiesReachable(const Airport &airport, int number_of_flights);
+
+    bool countriesReachable(const Airport &airport, int amount_of_flights);
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H

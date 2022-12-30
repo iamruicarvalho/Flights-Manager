@@ -121,15 +121,18 @@ void FlightManager::askInfoToTakeFromAirport(const Airport& airport) {
                 keepRunning = numberOfFlights(airport);
                 break;
             case 2:
-                keepRunning = numberOfAirlines();
+                keepRunning = numberOfAirlines(airport);
                 break;
             case 3:
-                keepRunning = numberOfDestinies();
+                keepRunning = numberOfDestinies(airport);
                 break;
             case 4:
-                keepRunning = numberReachable();
+                keepRunning = numberOfDestinyCountries(airport);
                 break;
             case 5:
+                keepRunning = numberReachable(airport);
+                break;
+            case 6:
                 return;
             default :
                 cout << "Invalid Input!\n";
@@ -140,11 +143,132 @@ void FlightManager::askInfoToTakeFromAirport(const Airport& airport) {
 
 bool FlightManager::numberOfFlights(const Airport& airport) {
     int node = airport.getNode();
-    flights
-    return flights.getFlights(node).size();
+    list<pair<int , string>> flights_and_destination = flights.getFlights(node);
+    cout << "There is " << flights_and_destination.size()<< " flights that leave airport " <<
+            airport.getName() << ".\n";
+    /*
+    for (pair<int,string> p : flights_and_destination){
+        cout << " - " << p.first << "(" << p.second << ")\n";
+    }
+     */
+    return true;
 }
 
+bool FlightManager::numberOfAirlines(const Airport &airport) {
+    int node = airport.getNode();
+    list<pair<int , string>> flights_and_destination = flights.getFlights(node);
+    set<string> airlines;
+    for (pair<int,string> p : flights_and_destination){
+        airlines.insert(p.second);
+    }
+    cout<< "There is " <<  airlines.size() << " different airlines that have flights that leave airport "<<
+        airport.getName() << ".\n";
+    return true;
+}
+bool FlightManager::numberOfDestinies(const Airport &airport) {
+    int node = airport.getNode();
+    list<pair<int , string>> flights_and_destination = flights.getFlights(node);
+    set<int> airport_nodes;
+    for (pair<int,string> p : flights_and_destination){
+        airport_nodes.insert(p.first);
+    }
+    cout<< "There is " <<  airport_nodes.size() << " different destinies that the flights from airport "<<
+        airport.getName() << " have.\n";
+    return true;
+}
 
+bool FlightManager::numberOfDestinyCountries(const Airport &airport) {
+    int node = airport.getNode();
+    list<pair<int , string>> flights_and_destination = flights.getFlights(node);
+    set<int> airport_nodes;
+    for (pair<int,string> p : flights_and_destination){
+        airport_nodes.insert(p.first);
+    }
+    set<string> countries;
+    for (int airport_node : airport_nodes){
+        string airport_code = flights.getAirport(airport_node);
+        Airport temp_airport (airport_code);
+        auto airport_pointer = airports.find(temp_airport);
+        countries.insert(airport_pointer->getCountry());
+    }
+    cout<< "There is " <<  countries.size() << " different countries that the flights from airport "<<
+        airport.getName() << " go to.\n";
+    return true;
+}
+
+bool FlightManager::numberReachable(const Airport &airport) {
+    cout << "What is the maximum amount of flights that we should consider?\n";
+    int amount_of_flights;
+    cin >>amount_of_flights;
+    if (cin.fail()){
+        cin.clear();
+        cin.ignore(256,'\n');
+        amount_of_flights = -1;
+    }
+    if (amount_of_flights <= 0 ) {
+        cout << "Invalid Input!\n";
+        return true;
+    }
+    bool keepRunning = true;
+    while(keepRunning){
+        askWhichPlaceMenu();
+        int option;
+        cin >> option;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(256,'\n');
+            option = 0;
+        }
+        switch (option){
+            case 1:
+                keepRunning = airportsReachable(airport , amount_of_flights);
+                break;
+            case 2:
+                keepRunning = citiesReachable(airport,amount_of_flights);
+                break;
+            case 3:
+                keepRunning = countriesReachable(airport,amount_of_flights);
+                break;
+            case 4:
+                return true;
+            default :
+                cout << "Invalid input!\n";
+        }
+    }
+}
+bool FlightManager::airportsReachable(const Airport &airport, int number_of_flights) {
+    int node = airport.getNode();
+    list<string> airports_reachable = flights.getAirportsReachable(node , number_of_flights);
+    cout << "There are " << airports_reachable.size() << " airports reachable from airport " << airport.getName() <<
+            " with, at max, " <<number_of_flights << " flights!\n";
+    return true;
+}
+bool FlightManager::citiesReachable(const Airport &airport, int number_of_flights) {
+    int node = airport.getNode();
+    list<string> airports_reachable = flights.getAirportsReachable(node , number_of_flights);
+    set<pair<string,string>> cities_reachable;
+    for (const string& airport_code : airports_reachable){
+        Airport temp_airport(airport_code);
+        auto airport_pointer = airports.find(temp_airport);
+        cities_reachable.insert({airport_pointer->getCity(),airport_pointer->getCountry()});
+    }
+    cout << "There are " << cities_reachable.size() << " cities reachable from airport " << airport.getName() <<
+         " with, at max, " <<number_of_flights << " flights!\n";
+    return true;
+}
+bool FlightManager::countriesReachable(const Airport &airport, int amount_of_flights) {
+    int node = airport.getNode();
+    list<string> airports_reachable = flights.getAirportsReachable(node , amount_of_flights);
+    set<string> countries_reachable;
+    for (const string& airport_code : airports_reachable){
+        Airport temp_airport(airport_code);
+        auto airport_pointer = airports.find(temp_airport);
+        countries_reachable.insert(airport_pointer->getCountry());
+    }
+    cout << "There are " << countries_reachable.size() << " countries reachable from airport " << airport.getName() <<
+         " with, at max, " <<amount_of_flights << " flights!\n";
+    return true;
+}
 //------------------------Menus-------------------------------
 void FlightManager::showAirportInfoMenu() {
     cout << "======================================\n";
@@ -152,10 +276,38 @@ void FlightManager::showAirportInfoMenu() {
     cout << "| 1- Number of flights               |\n";
     cout << "| 2- Number of airlines with         |\n";
     cout << "|    flights from this airport       |\n";
-    cout << "| 3- Numbers of different destinies  |\n";
-    cout << "| 4- Number of places reachable      |\n";
-    cout << "| 5- Go back                         |\n";
+    cout << "| 3- Number of different destinies   |\n";
+    cout << "| 4- Number of different destiny     |\n";
+    cout << "|    countries                       |\n";
+    cout << "| 5- Number of places reachable      |\n";
+    cout << "| 6- Go back                         |\n";
     cout << "======================================\n";
     cout << "Pick an option:";
 }
+
+void FlightManager::askWhichPlaceMenu() {
+    cout << "======================================\n";
+    cout << "| Options :                          |\n";
+    cout << "| 1- Number of airports reachable    |\n";
+    cout << "| 2- Number of cities reachable      |\n";
+    cout << "| 3- Number of countries reachable   |\n";
+    cout << "| 4- Go back                         |\n";
+    cout << "======================================\n";
+    cout << "Pick an option:";
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

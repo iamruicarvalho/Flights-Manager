@@ -22,6 +22,7 @@ class Graph {
         list<Edge> adj; // The list of outgoing edges (to adjacent nodes)
         bool visited;   // As the node been visited on a search?
         string airport;
+        int distance;
     };
 
     int n;              // Graph size (vertices are numbered from 1 to n)
@@ -44,6 +45,10 @@ public:
     void setAirport(int v , const string& airport);
 
     list<pair<int , string>> getFlights(int node);
+
+    string getAirport(int v);
+
+    list<string> getAirportsReachable(int v, int f);
 };
 
 #endif
