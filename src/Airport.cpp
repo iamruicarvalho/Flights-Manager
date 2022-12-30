@@ -89,7 +89,3 @@ void Airport::setNode(int node) {
     this->node = node;
 }
 
-
-
-
-
