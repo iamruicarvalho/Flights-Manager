@@ -27,7 +27,7 @@ int main() {
         }
         switch (option){
             case 1:
-                bestTrajectory(h);
+                h.startingPoint();
                 break;
             case 2:
                 h.askForAirport();
@@ -41,13 +41,6 @@ int main() {
     }
 }
 
-void bestTrajectory(FlightManager& h) {
-    bool keepRunning = true;
-    while(keepRunning){
-
-
-    }
-}
 
 //-----------------------Menus-----------------------------------
 
@@ -61,15 +54,4 @@ void showMenu(){
     cout << "Pick an option:";
 }
 
-void showBestTrajectoryMenu() {
-    cout << "========================\n";
-    cout << "| Options :            |\n";
-    cout << "| 1- Normal            |\n";
-    cout << "| 2- Specify local     |\n";
-    cout << "| 3- Specify airlines  |\n";
-    cout << "| 4- Specify local and |\n";
-    cout << "|    airlines          |\n";
-    cout << "| 5- Go back           |\n";
-    cout << "========================\n";
-    cout << "Pick an option:";
-}
+

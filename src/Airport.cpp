@@ -65,14 +65,14 @@ void Airport::setLongitude(double longitude) {
     this->longitude = longitude;
 }
 
-double Airport::distance(const Airport & a2) {
-    double dLat = (a2.latitude - latitude) *
+double Airport::distance(double latitude1, double longitude1) const {
+    double dLat = (latitude1 - latitude) *
                   M_PI / 180.0;
-    double dLon = (a2.longitude - longitude) *
+    double dLon = (longitude1 - longitude) *
                   M_PI / 180.0;
 
     double lat1 = (latitude) * M_PI / 180.0;
-    double lat2 = (a2.latitude) * M_PI / 180.0;
+    double lat2 = (latitude1) * M_PI / 180.0;
 
     double a = pow(sin(dLat / 2), 2) +
                pow(sin(dLon / 2), 2) *
