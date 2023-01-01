@@ -61,7 +61,7 @@ void FlightManager::lerFicheiros() {
         cout << "File not found\n";
         return;
     }
-    flights = Graph(temp.size(),true);
+    flights = Graph((int)temp.size(),true);
     auto ptr = temp.begin();
     for (int i = 1 ; i<=temp.size();i++){
         flights.setAirport(i,ptr->getCode());
@@ -157,14 +157,15 @@ bool FlightManager::numberOfFlights(const Airport& airport) {
 bool FlightManager::numberOfAirlines(const Airport &airport) {
     int node = airport.getNode();
     list<pair<int , string>> flights_and_destination = flights.getFlights(node);
-    set<string> airlines;
-    for (pair<int,string> p : flights_and_destination){
-        airlines.insert(p.second);
+    set<string> airlines_codes;
+    for (const pair<int,string>& p : flights_and_destination){
+        airlines_codes.insert(p.second);
     }
-    cout<< "There is " <<  airlines.size() << " different airlines that have flights that leave airport "<<
-        airport.getName() << ".\n";
+    cout << "There is " << airlines_codes.size() << " different airlines_codes that have flights that leave airport " <<
+         airport.getName() << ".\n";
     return true;
 }
+
 bool FlightManager::numberOfDestinies(const Airport &airport) {
     int node = airport.getNode();
     list<pair<int , string>> flights_and_destination = flights.getFlights(node);

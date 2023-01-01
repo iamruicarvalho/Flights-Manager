@@ -44,8 +44,8 @@ int main() {
 void bestTrajectory(FlightManager& h) {
     bool keepRunning = true;
     while(keepRunning){
-
-
+        showBestTrajectoryMenu();
+        keepRunning = false;
     }
 }
 
