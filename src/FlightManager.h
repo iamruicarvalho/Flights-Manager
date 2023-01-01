@@ -37,6 +37,34 @@ public:
     bool airportsReachable(const Airport &airport, int number_of_flights);
     bool citiesReachable(const Airport &airport, int number_of_flights);
     bool countriesReachable(const Airport &airport, int amount_of_flights);
+
+    void startingPoint();
+
+    void destination();
+
+    void showStartingPointMenu();
+
+    void askForAirportStartingPoint();
+
+    void askForCityStartingPoint();
+
+    void askForLocationStartingPoint();
+
+    void showDestinationMenu();
+
+    void askForAirportDestination();
+
+    double haversineCalculateDistance(double latitude, double longitude, double latitude1, double longitude1);
+
+    void askForCityDestination();
+
+    void askForLocationDestination();
+
+    void showAirlineMenu();
+
+    void airline();
+
+    void askForAirline();
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H
