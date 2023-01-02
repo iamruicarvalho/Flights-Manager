@@ -23,7 +23,6 @@ void FlightManager::lerFicheiros() {
         getline(ss,name , ',');
         getline(ss,city , ',');
         getline(ss,country,',');
-        getline(ss,country,',');
         ss >>  latitude;
         ss.ignore(1);
         ss >> longitude;
