@@ -82,6 +82,24 @@ void FlightManager::lerFicheiros() {
         flights.addEdge(source_pointer->getNode(),target_pointer->getNode(),airline);
     }
     flights_file.close();
+
+    //test
+    int a1n = (airports.find({"CDG"}))->getNode();
+    int a2n = (airports.find({"CIY"}))->getNode();
+
+    auto l = flights.calculateBestTrajectory(a1n,{a2n},{});
+
+    for (auto p : l){
+        cout << "One possible path would be:\n";
+        auto pointer = p.begin();
+        cout << *pointer << "\n";
+        pointer++;
+        while (pointer != p.end()){
+            cout << "   |   \n";
+            cout << *pointer << "\n";
+            pointer++;
+        }
+    }
 }
 
 FlightManager::FlightManager() : flights(0){}

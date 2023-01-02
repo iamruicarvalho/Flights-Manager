@@ -118,11 +118,12 @@ list<list<string>>Graph::calculateBestTrajectory(int startup, const list<int> &e
         int u = nodes_list.back();
         if (max_distance != 0 && nodes[u].distance == max_distance) break;
         q.pop();
-        if (max_distance == 0 && find(end.begin(),end.end(),u) != end.end())
-            max_distance = nodes[u].distance;
         for (const auto& e : nodes[u].adj) {
             int w = e.dest;
             if (!nodes[w].visited && (airlines.empty() || find(airlines.begin(),airlines.end(),e.airline)!=airlines.end())) {
+                if ( max_distance == 0 && find(end.begin(),end.end(),w) != end.end()){
+                    max_distance = nodes[u].distance +1;
+                }
                 list<int> new_list (nodes_list);
                 new_list.push_back(w);
                 q.push(new_list);
