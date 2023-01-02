@@ -38,7 +38,7 @@ public:
     void setLongitude(double longitude);
     void setNode(int node);
 
-    double distance(const Airport& a2);
+    double distance(double latitude1, double longitude1) const;
 };
 
 struct airportHash
