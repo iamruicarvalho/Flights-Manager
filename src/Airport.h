@@ -47,7 +47,7 @@ struct airportHash
     int operator() (const Airport& airport) const {
         int res = 1;
         for (char t : airport.getCode()){
-            res*=t+res;
+            res *= t + res;
         }
         return res;
     }
