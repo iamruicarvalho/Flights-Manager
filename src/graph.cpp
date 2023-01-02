@@ -86,4 +86,68 @@ list<string> Graph::getAirportsReachable(int v, int f) {
     return res;
 }
 
+list<list<string>>& Graph::calculateBestTrajectory(const list<int>& startup, const list<int>& end, const list<string>& airlines) {
+    list<list<string>> res;
+    int distance = INT32_MAX;
+    for (int s : startup){
+        list<list<string>> temp = calculateBestTrajectory(s,end,airlines);
+        if (temp.empty()) continue;
+        if (temp.front().size() < distance){
+            res = temp;
+            distance = temp.front().size();
+        }
+        else if (temp.front().size() > distance) continue;
+        else if (temp.front().size() == distance) res.splice(res.end(), temp);
+    }
+    return res;
+}
+
+list<list<string>>Graph::calculateBestTrajectory(int startup, const list<int> &end, const list<string> &airlines) {
+    for (int i=1; i<=n; i++) nodes[i].visited = false;
+    list<list<string>> res;
+    int max_distance = 0;
+
+    queue<list<int>> q;
+    list<int> initial_list;
+    initial_list.push_back(startup);
+    q.push(initial_list);
+    nodes[startup].visited = true;
+    nodes[startup].distance = 0;
+    while (!q.empty()) {
+        list<int> nodes_list = q.front();
+        int u = nodes_list.back();
+        if (max_distance != 0 && nodes[u].distance == max_distance) break;
+        q.pop();
+        if (max_distance == 0 && find(end.begin(),end.end(),u) != end.end())
+            max_distance = nodes[u].distance;
+        for (const auto& e : nodes[u].adj) {
+            int w = e.dest;
+            if (!nodes[w].visited && (airlines.empty() || find(airlines.begin(),airlines.end(),e.airline)!=airlines.end())) {
+                list<int> new_list (nodes_list);
+                new_list.push_back(w);
+                q.push(new_list);
+                nodes[w].distance = nodes[u].distance +1;
+                nodes[w].visited = true;
+            }
+        }
+    }
+    if (max_distance == 0) return res;
+    while (!q.empty()){
+        list<int> nodes_list = q.front();
+        q.pop();
+        int u = nodes_list.back();
+        if (find(end.begin(),end.end(),u) != end.end()){
+            list<string> temp;
+            for (int node : nodes_list){
+                temp.push_back(nodes[node].airport);
+            }
+            res.push_back(temp);
+        }
+    }
+    return res;
+}
+
+
+
+
 

@@ -105,6 +105,7 @@ void FlightManager::askForAirport() {
     askInfoToTakeFromAirport(*airport_pointer);
 }
 
+
 void FlightManager::startingPoint(){
     bool keepRunning = true;
     while(keepRunning){
@@ -452,7 +453,7 @@ bool FlightManager::numberOfAirlines(const Airport &airport) {
     for (const pair<int,string>& p : flights_and_destination){
         airlines_codes.insert(p.second);
     }
-    cout << "There is " << airlines_codes.size() << " different airlines_codes that have flights that leave airport " <<
+    cout << "There is " << airlines_codes.size() << " different airlines that have flights that leave airport " <<
          airport.getName() << ".\n";
     return true;
 }
