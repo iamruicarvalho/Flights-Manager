@@ -23,7 +23,7 @@ void FlightManager::lerFicheiros() {
         getline(ss,name , ',');
         getline(ss,city , ',');
         getline(ss,country,',');
-        ss >>  latitude;
+        ss >> latitude;
         ss.ignore(1);
         ss >> longitude;
         Airport airport(code , name , city , country , latitude , longitude);
@@ -63,7 +63,7 @@ void FlightManager::lerFicheiros() {
     }
     flights = Graph((int)temp.size(),true);
     auto ptr = temp.begin();
-    for (int i = 1 ; i<=temp.size();i++){
+    for (int i = 1; i <= temp.size(); i++){
         flights.setAirport(i,ptr->getCode());
         ptr->setNode(i);
         ptr++;
@@ -193,7 +193,7 @@ void FlightManager::airline(){
 }
 
 void FlightManager::askForAirline(){
-    cout << "What is the code of the airline you want to fly?\n";
+    cout << "What is the code of the airline you want to fly with?\n";
     string code;
     cin >>code;
     if (cin.fail()){
@@ -201,14 +201,10 @@ void FlightManager::askForAirline(){
         cin.ignore(256,'\n');
         code = "";
     }
-    bool found = false;
-    for (auto airline = airlines.begin(); airline != airlines.end(); airline++){
-        if (airline->getCode() == code){
-            found = true;
-        }
-    }
-    if (!found){
-        cout << "Airline does not exist!\n";
+    Airline airline(code);
+    auto airline_pointer = airlines.find(airline);
+    if (airline_pointer == airlines.end()) {
+        cout << "Invalid Input!\n";
         return;
     }
 
@@ -219,7 +215,6 @@ void FlightManager::askForAirline(){
         cin.clear();
         cin.ignore(256,'\n');
         answer = "";
-
     }
 
     if (answer == "yes" || answer == "Yes" || answer == "YES" || answer == "y" || answer == "Y"){
@@ -293,12 +288,12 @@ void FlightManager::askForCityStartingPoint(){
             airports_in_city.push_back(airport);
     }
     if (airports_in_city.empty()){
-        cout << "There is no airport in that city!\n";
+        cout << "There are no airports in that city!\n";
         return;
     }
     cout << "The airports in that city are:\n";
     for (const Airport& airport : airports_in_city){
-        cout << airport.getName() << endl;
+        cout << airport.getCode() << ',' << airport.getName() << endl;
     }
     destination();
 }
@@ -380,7 +375,7 @@ void FlightManager::askForLocationDestination(){
     double closestDistance = 1000000;
     string closestAirport;
 
-    for(const Airport& airport: airports){
+    for (const Airport& airport: airports){
         double latitude1 = airport.getLatitude();
         double longitude1 = airport.getLongitude();
 
@@ -479,7 +474,7 @@ bool FlightManager::numberOfDestinyCountries(const Airport &airport) {
     set<string> countries;
     for (int airport_node : airport_nodes){
         string airport_code = flights.getAirport(airport_node);
-        Airport temp_airport (airport_code);
+        Airport temp_airport(airport_code);
         auto airport_pointer = airports.find(temp_airport);
         countries.insert(airport_pointer->getCountry());
     }
