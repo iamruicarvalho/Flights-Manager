@@ -594,6 +594,72 @@ bool FlightManager::countriesReachable(const Airport &airport, int amount_of_fli
          " with, at max, " <<amount_of_flights << " flights!\n";
     return true;
 }
+
+void FlightManager::askForOtherInfo(){
+    bool KeepRunning = true;
+    while(KeepRunning){
+        askForOtherInfoMenu();
+        int option;
+        cin >> option;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(256,'\n');
+            option = 0;
+        }
+        switch (option){
+            case 1:
+                numberOfCountries();
+                break;
+            case 2:
+                numberOfCities();
+                break;
+            case 3:
+                averageAirportsByCountry();
+                break;
+            case 4:
+                KeepRunning = false;
+                break;
+            default:
+                cout << "Invalid input!\n";
+        }
+    }
+}
+
+void FlightManager::numberOfCountries(){
+    cout << "These are the countries reachable by plane:";
+    unordered_set<string> unique_countries;
+    for (auto& x : airports){
+        if (unique_countries.find(x.getCountry()) == unique_countries.end()) {
+            cout << x.getCountry() << "\n";
+            unique_countries.insert(x.getCountry());
+        }
+    }
+    cout << "Total: " << unique_countries.size() << " Countries\n";
+}
+
+void FlightManager::numberOfCities(){
+    cout << "These are the cities reachable by plane:";
+    unordered_set<string> unique_cities;
+    for (auto& x : airports){
+        if (unique_cities.find(x.getCity()) == unique_cities.end()) {
+            cout << x.getCity() << "\n";
+            unique_cities.insert(x.getCity());
+        }
+    }
+    cout << "Total: " << unique_cities.size() << " Cities\n";
+}
+
+void FlightManager::averageAirportsByCountry(){
+    unordered_set<string> unique_countries;
+    for (auto& x : airports){
+        if (unique_countries.find(x.getCountry()) == unique_countries.end())
+            unique_countries.insert(x.getCountry());
+    }
+    float average = airports.size() / unique_countries.size();
+
+    cout << "The average number of airports in a country is: " << average << "\n";
+}
+
 //------------------------Menus-------------------------------
 void FlightManager::showAirportInfoMenu() {
     cout << "======================================\n";
@@ -653,17 +719,13 @@ void FlightManager::showAirlineMenu() {
     cout << "Pick an option:";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void FlightManager::askForOtherInfoMenu(){
+    cout << "==========================================\n";
+    cout << "| Other Info :                           |\n";
+    cout << "| 1- Number of countries                 |\n";
+    cout << "| 2- Number of cities                    |\n";
+    cout << "| 3- Avg number of Airports in a Country |\n";
+    cout << "| 4- Go back                             |\n";
+    cout << "==========================================\n";
+    cout << "Pick an option:";
+}
