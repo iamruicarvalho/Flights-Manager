@@ -248,22 +248,6 @@ void FlightManager::askForAirline(){
     }
 }
 
-double FlightManager::haversineCalculateDistance(double latitude, double longitude, double latitude1, double longitude1){
-    double EarthRadius = 6371.0;
-
-    double lat = latitude * M_PI / 180;
-    double lat1 = latitude1 * M_PI / 180;
-    double lon = longitude * M_PI / 180;
-    double lon1 = longitude1 * M_PI / 180;
-
-    double latDiff = lat1 - lat;
-    double lonDiff = lon1 - lon;
-
-    double a = pow(sin(latDiff / 2.0), 2) + cos(lat) * cos(lat1) * pow(sin(lonDiff / 2.0), 2);
-    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-
-    return EarthRadius * c;
-}
 
 void FlightManager::askForLocationStartingPoint(){
     cout << "What is the latitude of the location that you want to start from?\n";
@@ -395,10 +379,8 @@ void FlightManager::askForLocationDestination(){
     string closestAirport;
 
     for (const Airport& airport: airports){
-        double latitude1 = airport.getLatitude();
-        double longitude1 = airport.getLongitude();
 
-        double distance = haversineCalculateDistance(latitude, longitude, latitude1, longitude1);
+        double distance = airport.distance(latitude, longitude);
 
         if (distance < closestDistance){
             closestDistance = distance;

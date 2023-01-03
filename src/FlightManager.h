@@ -68,7 +68,6 @@ public:
     void askForLocationStartingPoint();
     void askForLocationDestination();
 
-    double haversineCalculateDistance(double latitude, double longitude, double latitude1, double longitude1);
 
     void airline();
 };
