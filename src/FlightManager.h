@@ -26,15 +26,12 @@ private:
 public:
     FlightManager();
     void lerFicheiros();
-
     void showAirportInfoMenu();
     void showAirlineMenu();
     void showStartingPointMenu();
     void showDestinationMenu();
     void askWhichPlaceMenu();
-
     void askForAirport();
-    void askForAirline();
     void askInfoToTakeFromAirport(const Airport& airport);
 
     /**
@@ -57,19 +54,16 @@ public:
     bool airportsReachable(const Airport &airport, int number_of_flights);
     bool citiesReachable(const Airport &airport, int number_of_flights);
     bool countriesReachable(const Airport &airport, int amount_of_flights);
-
     void startingPoint();
-    void destination();
-
+    void destination(list<int> airportsStartingPoint);
     void askForAirportStartingPoint();
-    void askForAirportDestination();
+    void askForAirportDestination(list<int> airportsStartingPoint);
     void askForCityStartingPoint();
-    void askForCityDestination();
+    void askForCityDestination(list<int> airportsStartingPoint);
     void askForLocationStartingPoint();
-    void askForLocationDestination();
-
-
-    void airline();
+    void askForLocationDestination(list<int> airportsStartingPoint);
+    void airline(list<int> airportsStartingPoint, list<int> airportsDestination);
+    void askForAirline(list<int> airportsStartingPoint, list<int> airportsDestination, list<string> airlinesList);
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H

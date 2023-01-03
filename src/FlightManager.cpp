@@ -154,7 +154,7 @@ void FlightManager::startingPoint(){
     }
 }
 
-void FlightManager::destination(){
+void FlightManager::destination(list<int> airportsStartingPoint){
     bool keepRunning = true;
     while(keepRunning){
         showDestinationMenu();
@@ -167,13 +167,13 @@ void FlightManager::destination(){
         }
         switch (option){
             case 1:
-                askForAirportDestination();
+                askForAirportDestination(airportsStartingPoint);
                 break;
             case 2:
-                askForCityDestination();
+                askForCityDestination(airportsStartingPoint);
                 break;
             case 3:
-                askForLocationDestination();
+                askForLocationDestination(airportsStartingPoint);
                 break;
             case 4:
                 return;
@@ -184,8 +184,9 @@ void FlightManager::destination(){
     }
 }
 
-void FlightManager::airline(){
+void FlightManager::airline(list<int> airportsStartingPoint, list<int> airportsDestination){
     bool keepRunning = true;
+    list<string> airlines;
     while(keepRunning){
         showAirlineMenu();
         int option;
@@ -197,10 +198,10 @@ void FlightManager::airline(){
         }
         switch (option){
             case 1:
-                askForAirline();
+                askForAirline(airportsStartingPoint, airportsDestination, airlines);
                 break;
             case 2:
-                cout << "Now it is supposed to give the final result\n";
+                flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlines);
                 break;
             case 3:
                 return;
@@ -211,7 +212,7 @@ void FlightManager::airline(){
     }
 }
 
-void FlightManager::askForAirline(){
+void FlightManager::askForAirline(list<int> airportsStartingPoint, list<int> airportsDestination, list<string> airlinesList){
     cout << "What is the code of the airline you want to fly with?\n";
     string code;
     cin >>code;
@@ -227,6 +228,8 @@ void FlightManager::askForAirline(){
         return;
     }
 
+    airlinesList.push_back(airline_pointer->getCode());
+
     cout << "Do you want to fly with another airline as well?\n";
     string answer;
     cin >> answer;
@@ -237,10 +240,10 @@ void FlightManager::askForAirline(){
     }
 
     if (answer == "yes" || answer == "Yes" || answer == "YES" || answer == "y" || answer == "Y"){
-        askForAirline();
+        askForAirline(airportsStartingPoint, airportsDestination, airlinesList);
     }
     else if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N"){
-        cout << "Now it is supposed to give the final result\n";
+        flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlinesList);
     }
     else{
         cout << "Invalid Input!\n";
@@ -264,17 +267,25 @@ void FlightManager::askForLocationStartingPoint(){
     }
     double closestDistance = INT_MAX;
     string closestAirport;
+    string airportCode;
 
     for(auto airport = airports.begin(); airport != airports.end(); airport++){
         double distance = airport -> distance(latitude,longitude);
         if (distance < closestDistance){
             closestDistance = distance;
             closestAirport = airport -> getName();
+            airportCode = airport -> getCode();
         }
     }
+
     cout << "The closest airport to the location you entered is " << closestAirport << " with a distance of " << closestDistance << " km.\n";
 
-    destination();
+    int n = airports.find(airportCode) ->getNode();
+
+    list<int> airportsStartingPoint;
+    airportsStartingPoint.push_back(n);
+
+    destination(airportsStartingPoint);
 }
 void FlightManager::askForCityStartingPoint(){
     cout << "What is the city that you want to start from?\n";
@@ -298,7 +309,12 @@ void FlightManager::askForCityStartingPoint(){
     for (const Airport& airport : airports_in_city){
         cout << airport.getCode() << ',' << airport.getName() << endl;
     }
-    destination();
+    list<int> airportsStartingPoint;
+
+    for(auto& x : airports_in_city){
+        airportsStartingPoint.push_back(x.getNode());
+    }
+    destination(airportsStartingPoint);
 }
 
 void FlightManager::askForAirportStartingPoint(){
@@ -316,10 +332,14 @@ void FlightManager::askForAirportStartingPoint(){
         cout << "Invalid Input!\n";
         return;
     }
-    destination();
+
+    list<int> airportsStartingPoint;
+    airportsStartingPoint.push_back(airport_pointer->getNode());
+
+    destination(airportsStartingPoint);
 }
 
-void FlightManager::askForAirportDestination(){
+void FlightManager::askForAirportDestination(list<int> airportsStartingPoint){
     cout << "What is the code of the airport you want to go to?\n";
     string code;
     cin >>code;
@@ -334,10 +354,14 @@ void FlightManager::askForAirportDestination(){
         cout << "Invalid Input!\n";
         return;
     }
-    airline();
+
+    list<int> airportsDestination;
+    airportsDestination.push_back(airport_pointer->getNode());
+
+    airline(airportsStartingPoint, airportsDestination);
 }
 
-void FlightManager::askForCityDestination(){
+void FlightManager::askForCityDestination(list<int> airportsStartingPoint){
     cout << "What is the city that you want to go to?\n";
     string city;
     cin >> city;
@@ -359,10 +383,16 @@ void FlightManager::askForCityDestination(){
     for (const Airport& airport : airports_in_city){
         cout << airport.getName() << endl;
     }
-    airline();
+
+    list<int> airportsDestination;
+    for (auto& x: airports_in_city){
+        airportsDestination.push_back(x.getNode());
+    }
+
+    airline(airportsStartingPoint, airportsDestination);
 }
 
-void FlightManager::askForLocationDestination(){
+void FlightManager::askForLocationDestination(list<int> airportsStartingPoint){
     cout << "What is the latitude of the location that you want to go to?\n";
     double latitude;
     cin >> latitude;
@@ -377,6 +407,7 @@ void FlightManager::askForLocationDestination(){
     }
     double closestDistance = 1000000;
     string closestAirport;
+    string airportCode;
 
     for (const Airport& airport: airports){
 
@@ -385,11 +416,16 @@ void FlightManager::askForLocationDestination(){
         if (distance < closestDistance){
             closestDistance = distance;
             closestAirport = airport.getName();
+            airportCode = airport.getCode();
         }
     }
+
+    list<int> airportsDestination;
+    airportsDestination.push_back(airports.find(airportCode)->getNode());
+
     cout << "The closest airport to the location you entered is " << closestAirport << " with a distance of " << closestDistance << " km.\n";
 
-    airline();
+    airline(airportsStartingPoint, airportsDestination);
 }
 
 void FlightManager::askInfoToTakeFromAirport(const Airport& airport) {
