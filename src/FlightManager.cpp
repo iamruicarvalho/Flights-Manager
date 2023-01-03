@@ -84,19 +84,25 @@ void FlightManager::lerFicheiros() {
     flights_file.close();
 
     //test
-    int a1n = (airports.find({"CDG"}))->getNode();
-    int a2n = (airports.find({"CIY"}))->getNode();
+    auto a1p = airports.find({"USU"});
+    auto a2p = airports.find({"DVO"});
+    int a1n = a1p->getNode();
+    int a2n = a2p->getNode();
 
-    auto l = flights.calculateBestTrajectory(a1n,{a2n},{});
+    auto l = flights.calculateBestTrajectory({a1n},{a2n},{});
 
+    cout << "There are " <<  l.size() << " minimal trajectories!\n";
     for (auto p : l){
         cout << "One possible path would be:\n";
         auto pointer = p.begin();
-        cout << *pointer << "\n";
+        auto nodeIterator = airports.find({*pointer});
+        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
         pointer++;
         while (pointer != p.end()){
+            nodeIterator = airports.find({*pointer});
             cout << "   |   \n";
-            cout << *pointer << "\n";
+            cout << "   v   \n";
+            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
             pointer++;
         }
     }
