@@ -37,8 +37,20 @@ public:
     void askForAirline();
     void askInfoToTakeFromAirport(const Airport& airport);
 
+    /**
+     * Shows in the standard output the number of flights that leave airport
+     * @param airport
+     */
     bool numberOfFlights(const Airport& airport);
+    /**
+     * Shows in the standard output the number of airlines that have flights that leave airport
+     * @param airport
+     */
     bool numberOfAirlines(const Airport &airport);
+    /**
+     * Shows in the standard output the number of different destinies one can go to from airport
+     * @param airport
+     */
     bool numberOfDestinies(const Airport &airport);
     bool numberOfDestinyCountries(const Airport &airport);
     bool numberReachable(const Airport &airport);

@@ -82,6 +82,24 @@ void FlightManager::lerFicheiros() {
         flights.addEdge(source_pointer->getNode(),target_pointer->getNode(),airline);
     }
     flights_file.close();
+
+    //test
+    int a1n = (airports.find({"CDG"}))->getNode();
+    int a2n = (airports.find({"CIY"}))->getNode();
+
+    auto l = flights.calculateBestTrajectory(a1n,{a2n},{});
+
+    for (auto p : l){
+        cout << "One possible path would be:\n";
+        auto pointer = p.begin();
+        cout << *pointer << "\n";
+        pointer++;
+        while (pointer != p.end()){
+            cout << "   |   \n";
+            cout << *pointer << "\n";
+            pointer++;
+        }
+    }
 }
 
 FlightManager::FlightManager() : flights(0){}
@@ -104,6 +122,7 @@ void FlightManager::askForAirport() {
     }
     askInfoToTakeFromAirport(*airport_pointer);
 }
+
 
 void FlightManager::startingPoint(){
     bool keepRunning = true;
@@ -447,7 +466,7 @@ bool FlightManager::numberOfAirlines(const Airport &airport) {
     for (const pair<int,string>& p : flights_and_destination){
         airlines_codes.insert(p.second);
     }
-    cout << "There is " << airlines_codes.size() << " different airlines_codes that have flights that leave airport " <<
+    cout << "There is " << airlines_codes.size() << " different airlines that have flights that leave airport " <<
          airport.getName() << ".\n";
     return true;
 }
