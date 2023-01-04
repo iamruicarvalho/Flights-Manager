@@ -90,7 +90,7 @@ void FlightManager::lerFicheiros() {
     int a2n = a2p->getNode();
 
     auto l = flights.calculateBestTrajectory({a1n},{a2n},{});
-
+    l.unique();
     cout << "There are " <<  l.size() << " minimal trajectories!\n";
     for (auto p : l){
         cout << "One possible path would be:\n";
