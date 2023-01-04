@@ -12,6 +12,7 @@
 #include <iostream>
 #include <sstream>
 #include <set>
+#include <string>
 #include "graph.h"
 
 
@@ -26,8 +27,13 @@ public:
     FlightManager();
     void lerFicheiros();
     void showAirportInfoMenu();
+    void showAirlineMenu();
+    void showStartingPointMenu();
+    void showDestinationMenu();
+    void askWhichPlaceMenu();
     void askForAirport();
     void askInfoToTakeFromAirport(const Airport& airport);
+
     /**
      * Shows in the standard output the number of flights that leave airport
      * @param airport
@@ -45,38 +51,26 @@ public:
     bool numberOfDestinies(const Airport &airport);
     bool numberOfDestinyCountries(const Airport &airport);
     bool numberReachable(const Airport &airport);
-    void askWhichPlaceMenu();
     bool airportsReachable(const Airport &airport, int number_of_flights);
     bool citiesReachable(const Airport &airport, int number_of_flights);
     bool countriesReachable(const Airport &airport, int amount_of_flights);
-
     void startingPoint();
-
-    void destination();
-
-    void showStartingPointMenu();
-
+    void destination(list<int> airportsStartingPoint);
     void askForAirportStartingPoint();
-
+    void askForAirportDestination(list<int> airportsStartingPoint);
     void askForCityStartingPoint();
-
+    void askForCityDestination(list<int> airportsStartingPoint);
     void askForLocationStartingPoint();
+    void askForLocationDestination(list<int> airportsStartingPoint);
+    void airline(list<int> airportsStartingPoint, list<int> airportsDestination);
+    void askForAirline(list<int> airportsStartingPoint, list<int> airportsDestination, list<string> airlinesList);
+    void askForOtherInfo();
+    void askForOtherInfoMenu();
+    void numberOfCountries();
+    void numberOfCities();
 
-    void showDestinationMenu();
-
-    void askForAirportDestination();
-
-    double haversineCalculateDistance(double latitude, double longitude, double latitude1, double longitude1);
-
-    void askForCityDestination();
-
-    void askForLocationDestination();
-
-    void showAirlineMenu();
-
-    void airline();
-
-    void askForAirline();
+    void averageAirportsByCountry();
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H
+//podiamos perguntar se queriam listar por exemplo as airlines, ou os flights

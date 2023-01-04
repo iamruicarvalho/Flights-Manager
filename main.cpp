@@ -33,6 +33,9 @@ int main() {
                 h.askForAirport();
                 break;
             case 3:
+                h.askForOtherInfo();
+                break;
+            case 4:
                 keepRunning = false;
                 break;
             default:
@@ -49,7 +52,8 @@ void showMenu(){
     cout << "| Menu :              |\n";
     cout << "| 1- Best Trajectory  |\n";
     cout << "| 2- Airport Info     |\n";
-    cout << "| 3- Quit             |\n";
+    cout << "| 3- Other Info       |\n";
+    cout << "| 4- Quit             |\n";
     cout << "=======================\n";
     cout << "Pick an option:";
 }

@@ -71,7 +71,8 @@ list<string> Graph::getAirportsReachable(int v, int f) {
     nodes[v].visited = true;
     while (!q.empty()) { // while there are still unvisited nodes
         int u = q.front(); q.pop();
-        if (nodes[u].distance >f) break;
+        if (nodes[u].distance > f)
+            break;
         res.push_back(nodes[u].airport);
         for (auto e : nodes[u].adj) {
             int w = e.dest;
