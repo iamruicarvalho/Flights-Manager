@@ -32,3 +32,8 @@ void Airline::setCountry(const string &country) {Airline::country = country;}
 bool Airline::operator<(const Airline& a2) const {
     return code < a2.code;
 }
+
+bool Airline::operator==(const Airline& a2) const{
+    return code == a2.code;
+}
+

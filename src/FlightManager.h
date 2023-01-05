@@ -68,7 +68,7 @@ public:
     void askForOtherInfoMenu();
     void numberOfCountries();
     void numberOfCities();
-
+    Airline getAirline(string code);
     void averageAirportsByCountry();
 };
 
