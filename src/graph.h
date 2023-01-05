@@ -88,6 +88,12 @@ public:
     list<string> getAirportsReachable(int v, int f);
 
     list<list<string>> calculateBestTrajectory(const list<int>& startup,const list <int>& end,const list<string>& airlines);
+
+    int getNumFlightsTotal();
+
+    int getNumFlightsAirport(string code);
+
+    pair<pair<std::string, std::string>, int> diameter();
 };
 
 #endif

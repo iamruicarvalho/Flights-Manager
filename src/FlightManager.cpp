@@ -620,9 +620,18 @@ void FlightManager::askForOtherInfo(){
                 numberOfCities();
                 break;
             case 3:
-                averageAirportsByCountry();
+                numberOfFlights();
                 break;
             case 4:
+                averageAirportsByCountry();
+                break;
+            case 5:
+                airportMostFlights();
+                break;
+            case 6:
+                diameter();
+                break;
+            case 7:
                 KeepRunning = false;
                 break;
             default:
@@ -655,6 +664,10 @@ void FlightManager::numberOfCities(){
     cout << "Total: " << unique_cities.size() << " Cities\n";
 }
 
+void FlightManager::numberOfFlights(){
+    cout << "There are " << flights.getNumFlightsTotal() << " flights in the database!\n";
+}
+
 void FlightManager::averageAirportsByCountry(){
     unordered_set<string> unique_countries;
     for (auto& x : airports){
@@ -664,6 +677,28 @@ void FlightManager::averageAirportsByCountry(){
     float average = airports.size() / unique_countries.size();
 
     cout << "The average number of airports in a country is: " << average << "\n";
+}
+
+void FlightManager::airportMostFlights(){
+    int maxFlights = 0;
+    int currentFlights = 0;
+    string maxAirport;
+    list<int> lFlights;
+    for (auto& x : airports){
+        currentFlights = flights.getNumFlightsAirport(x.getCode());
+
+        if (currentFlights > maxFlights){
+            maxFlights = currentFlights;
+            maxAirport = x.getName();
+        }
+    }
+    cout << "The airport with the most flights is " << maxAirport << "with " << maxFlights << " flights either arriving or leaving it" << "\n";
+}
+
+void FlightManager::diameter(){
+    pair<pair<string, string>, int> diameter = flights.diameter();
+
+    cout << "The diameter of the graph is " << diameter.second << " , the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport\n";
 }
 
 //------------------------Menus-------------------------------
@@ -730,8 +765,11 @@ void FlightManager::askForOtherInfoMenu(){
     cout << "| Other Info :                           |\n";
     cout << "| 1- Number of countries                 |\n";
     cout << "| 2- Number of cities                    |\n";
-    cout << "| 3- Avg number of Airports in a Country |\n";
-    cout << "| 4- Go back                             |\n";
+    cout << "| 3- Number of Flights                   |\n";
+    cout << "| 4- Avg number of Airports in a Country |\n";
+    cout << "| 5- Airport with the most flights       |\n";
+    cout << "| 6- Diameter of the graph               |\n";
+    cout << "| 7- Go back                             |\n";
     cout << "==========================================\n";
     cout << "Pick an option:";
 }

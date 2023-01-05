@@ -70,6 +70,12 @@ public:
     void numberOfCities();
 
     void averageAirportsByCountry();
+
+    void numberOfFlights();
+
+    void airportMostFlights();
+
+    void diameter();
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H
