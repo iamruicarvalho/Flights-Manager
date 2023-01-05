@@ -67,4 +67,5 @@ public:
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H
-//podiamos perguntar se queriam listar por exemplo as airlines, ou os flights
+//podiamos perguntar se queriam listar por exemplo as airlines, ou os flight
+//depois de perguntar o destino, podiamos mostrar o path

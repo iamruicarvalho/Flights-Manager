@@ -117,7 +117,8 @@ list<list<string>>Graph::calculateBestTrajectory(int startup, const list<int> &e
     while (!q.empty()) {
         list<int> nodes_list = q.front();
         int u = nodes_list.back();
-        if (max_distance != 0 && nodes[u].distance == max_distance) break;
+        if (max_distance != 0 && nodes[u].distance == max_distance)
+            break;
         q.pop();
         for (const auto& e : nodes[u].adj) {
             int w = e.dest;

@@ -230,7 +230,7 @@ void FlightManager::askForAirline(list<int> airportsStartingPoint, list<int> air
 
     airlinesList.push_back(airline_pointer->getCode());
 
-    cout << "Do you want to fly with another airline as well?\n";
+    cout << "Do you want to fly with another airline as well? (y/n)\n";
     string answer;
     cin >> answer;
     if (cin.fail()){
