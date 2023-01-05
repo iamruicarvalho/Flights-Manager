@@ -84,8 +84,8 @@ void FlightManager::lerFicheiros() {
     flights_file.close();
 
     //test
-    auto a1p = airports.find({"USU"});
-    auto a2p = airports.find({"FNC"});
+    auto a1p = airports.find({"CDG"});
+    auto a2p = airports.find({"JFK"});
     int a1n = a1p->getNode();
     int a2n = a2p->getNode();
 
@@ -207,15 +207,37 @@ void FlightManager::airline(list<int> airportsStartingPoint, list<int> airportsD
             cin.ignore(256,'\n');
             option = 0;
         }
+        list<list<string>> l;
         switch (option){
             case 1:
                 askForAirline(airportsStartingPoint, airportsDestination, airlines);
                 break;
-            case 2:
-                flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlines);
-                break;
             case 3:
                 return;
+            case 2:
+                l = flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, {});
+                l.unique();
+                cout << "There are " <<  l.size() << " minimal trajectories!\n";
+                for (auto p : l){
+                    cout << "One possible path would be:\n";
+                    auto pointer = p.begin();
+                    auto nodeIterator = airports.find({*pointer});
+                    cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+                    auto tempP = pointer;
+                    pointer++;
+                    while (pointer != p.end()){
+                        auto tempNode = airports.find({*tempP});
+                        nodeIterator = airports.find({*pointer});
+                        string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),{});
+                        Airline a = getAirline(airline_code);
+                        cout << "   |   " << a.getName() <<  "\n";
+                        cout << "   v   \n";
+                        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+                        pointer++;
+                        tempP++;
+                    }
+                }
+                break;
             default:
                 cout << "!!Invalid Input!!\n\n";
         }
@@ -254,7 +276,28 @@ void FlightManager::askForAirline(list<int> airportsStartingPoint, list<int> air
         askForAirline(airportsStartingPoint, airportsDestination, airlinesList);
     }
     else if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N"){
-        flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlinesList);
+        auto l = flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlinesList);
+        l.unique();
+        cout << "There are " <<  l.size() << " minimal trajectories!\n";
+        for (auto p : l){
+            cout << "One possible path would be:\n";
+            auto pointer = p.begin();
+            auto nodeIterator = airports.find({*pointer});
+            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+            auto tempP = pointer;
+            pointer++;
+            while (pointer != p.end()){
+                auto tempNode = airports.find({*tempP});
+                nodeIterator = airports.find({*pointer});
+                string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),airlinesList);
+                Airline a = getAirline(airline_code);
+                cout << "   |   " << a.getName() <<  "\n";
+                cout << "   v   \n";
+                cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+                pointer++;
+                tempP++;
+            }
+        }
     }
     else{
         cout << "Invalid Input!\n";
@@ -741,7 +784,7 @@ void FlightManager::askForOtherInfoMenu(){
     cout << "Pick an option:";
 }
 
-Airline FlightManager::getAirline(string code) {
+Airline FlightManager::getAirline(const string& code) {
     for (Airline a : airlines){
         if (a.getCode() == code) return a;
     }
