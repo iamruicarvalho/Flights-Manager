@@ -64,6 +64,12 @@ public:
     void askForLocationDestination(list<int> airportsStartingPoint);
     void airline(list<int> airportsStartingPoint, list<int> airportsDestination);
     void askForAirline(list<int> airportsStartingPoint, list<int> airportsDestination, list<string> airlinesList);
+    void askForOtherInfo();
+    void askForOtherInfoMenu();
+    void numberOfCountries();
+    void numberOfCities();
+
+    void averageAirportsByCountry();
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H

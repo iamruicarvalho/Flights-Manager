@@ -84,19 +84,25 @@ void FlightManager::lerFicheiros() {
     flights_file.close();
 
     //test
-    int a1n = (airports.find({"CDG"}))->getNode();
-    int a2n = (airports.find({"CIY"}))->getNode();
+    auto a1p = airports.find({"USU"});
+    auto a2p = airports.find({"DVO"});
+    int a1n = a1p->getNode();
+    int a2n = a2p->getNode();
 
-    auto l = flights.calculateBestTrajectory(a1n,{a2n},{});
-
+    auto l = flights.calculateBestTrajectory({a1n},{a2n},{});
+    l.unique();
+    cout << "There are " <<  l.size() << " minimal trajectories!\n";
     for (auto p : l){
         cout << "One possible path would be:\n";
         auto pointer = p.begin();
-        cout << *pointer << "\n";
+        auto nodeIterator = airports.find({*pointer});
+        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
         pointer++;
         while (pointer != p.end()){
+            nodeIterator = airports.find({*pointer});
             cout << "   |   \n";
-            cout << *pointer << "\n";
+            cout << "   v   \n";
+            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
             pointer++;
         }
     }
@@ -594,6 +600,72 @@ bool FlightManager::countriesReachable(const Airport &airport, int amount_of_fli
          " with, at max, " <<amount_of_flights << " flights!\n";
     return true;
 }
+
+void FlightManager::askForOtherInfo(){
+    bool KeepRunning = true;
+    while(KeepRunning){
+        askForOtherInfoMenu();
+        int option;
+        cin >> option;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(256,'\n');
+            option = 0;
+        }
+        switch (option){
+            case 1:
+                numberOfCountries();
+                break;
+            case 2:
+                numberOfCities();
+                break;
+            case 3:
+                averageAirportsByCountry();
+                break;
+            case 4:
+                KeepRunning = false;
+                break;
+            default:
+                cout << "Invalid input!\n";
+        }
+    }
+}
+
+void FlightManager::numberOfCountries(){
+    cout << "These are the countries reachable by plane:";
+    unordered_set<string> unique_countries;
+    for (auto& x : airports){
+        if (unique_countries.find(x.getCountry()) == unique_countries.end()) {
+            cout << x.getCountry() << "\n";
+            unique_countries.insert(x.getCountry());
+        }
+    }
+    cout << "Total: " << unique_countries.size() << " Countries\n";
+}
+
+void FlightManager::numberOfCities(){
+    cout << "These are the cities reachable by plane:";
+    unordered_set<string> unique_cities;
+    for (auto& x : airports){
+        if (unique_cities.find(x.getCity()) == unique_cities.end()) {
+            cout << x.getCity() << "\n";
+            unique_cities.insert(x.getCity());
+        }
+    }
+    cout << "Total: " << unique_cities.size() << " Cities\n";
+}
+
+void FlightManager::averageAirportsByCountry(){
+    unordered_set<string> unique_countries;
+    for (auto& x : airports){
+        if (unique_countries.find(x.getCountry()) == unique_countries.end())
+            unique_countries.insert(x.getCountry());
+    }
+    float average = airports.size() / unique_countries.size();
+
+    cout << "The average number of airports in a country is: " << average << "\n";
+}
+
 //------------------------Menus-------------------------------
 void FlightManager::showAirportInfoMenu() {
     cout << "======================================\n";
@@ -653,17 +725,13 @@ void FlightManager::showAirlineMenu() {
     cout << "Pick an option:";
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void FlightManager::askForOtherInfoMenu(){
+    cout << "==========================================\n";
+    cout << "| Other Info :                           |\n";
+    cout << "| 1- Number of countries                 |\n";
+    cout << "| 2- Number of cities                    |\n";
+    cout << "| 3- Avg number of Airports in a Country |\n";
+    cout << "| 4- Go back                             |\n";
+    cout << "==========================================\n";
+    cout << "Pick an option:";
+}
