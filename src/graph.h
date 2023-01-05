@@ -89,6 +89,8 @@ public:
 
     list<list<string>> calculateBestTrajectory(const list<int>& startup,const list <int>& end,const list<string>& airlines);
 
+    string getAirline(int a , int b , list<string> air);
+
     int getNumFlightsTotal();
 
     int getNumFlightsAirport(string code);

@@ -193,6 +193,15 @@ list<list<string>> Graph::calculateBestTrajectory(const list<int>& startup, cons
     return res;
 }
 
+string Graph::getAirline(int a, int b, list<string> air) {
+    for (Edge e : nodes[a].adj){
+        if (e.dest != b) continue;
+        if (air.empty() || find(air.begin(),air.end(),e.airline) != air.end()) return e.airline;
+    }
+    return "";
+}
+
+
 
 
 

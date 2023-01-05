@@ -68,7 +68,7 @@ public:
     void askForOtherInfoMenu();
     void numberOfCountries();
     void numberOfCities();
-
+    Airline getAirline(const string& code);
     void averageAirportsByCountry();
 
     void numberOfFlights();
