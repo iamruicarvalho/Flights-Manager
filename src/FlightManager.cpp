@@ -700,16 +700,18 @@ void FlightManager::numberOfCountries(){
     cout << "Total: " << unique_countries.size() << " Countries\n";
 }
 
+
 void FlightManager::numberOfCities(){
     cout << "These are the cities reachable by plane:";
-    unordered_set<string> unique_cities;
+    unordered_set<string> unique_countries_cities;
     for (auto& x : airports){
-        if (unique_cities.find(x.getCity()) == unique_cities.end()) {
-            cout << x.getCity() << "\n";
-            unique_cities.insert(x.getCity());
+        string city_country = x.getCity() + " , " + x.getCountry();
+        if (unique_countries_cities.find(city_country) == unique_countries_cities.end()) {
+            cout << city_country << "\n";
+            unique_countries_cities.insert(city_country);
         }
     }
-    cout << "Total: " << unique_cities.size() << " Cities\n";
+    cout << "Total: " << unique_countries_cities.size() << " Cities\n";
 }
 
 void FlightManager::numberOfFlights(){
