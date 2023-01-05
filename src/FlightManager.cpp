@@ -82,35 +82,6 @@ void FlightManager::lerFicheiros() {
         flights.addEdge(source_pointer->getNode(),target_pointer->getNode(),airline);
     }
     flights_file.close();
-
-    //test
-    auto a1p = airports.find({"CDG"});
-    auto a2p = airports.find({"JFK"});
-    int a1n = a1p->getNode();
-    int a2n = a2p->getNode();
-
-    auto l = flights.calculateBestTrajectory({a1n},{a2n},{});
-    l.unique();
-    cout << "There are " <<  l.size() << " minimal trajectories!\n";
-    for (auto p : l){
-        cout << "One possible path would be:\n";
-        auto pointer = p.begin();
-        auto nodeIterator = airports.find({*pointer});
-        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-        auto tempP = pointer;
-        pointer++;
-        while (pointer != p.end()){
-            auto tempNode = airports.find({*tempP});
-            nodeIterator = airports.find({*pointer});
-            string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),{});
-            Airline a = getAirline(airline_code);
-            cout << "   |   " << a.getName() <<  "\n";
-            cout << "   v   \n";
-            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-            pointer++;
-            tempP++;
-        }
-    }
 }
 
 FlightManager::FlightManager() : flights(0){}
@@ -207,7 +178,6 @@ void FlightManager::airline(list<int> airportsStartingPoint, list<int> airportsD
             cin.ignore(256,'\n');
             option = 0;
         }
-        list<list<string>> l;
         switch (option){
             case 1:
                 askForAirline(airportsStartingPoint, airportsDestination, airlines);
@@ -215,28 +185,7 @@ void FlightManager::airline(list<int> airportsStartingPoint, list<int> airportsD
             case 3:
                 return;
             case 2:
-                l = flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, {});
-                l.unique();
-                cout << "There are " <<  l.size() << " minimal trajectories!\n";
-                for (auto p : l){
-                    cout << "One possible path would be:\n";
-                    auto pointer = p.begin();
-                    auto nodeIterator = airports.find({*pointer});
-                    cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-                    auto tempP = pointer;
-                    pointer++;
-                    while (pointer != p.end()){
-                        auto tempNode = airports.find({*tempP});
-                        nodeIterator = airports.find({*pointer});
-                        string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),{});
-                        Airline a = getAirline(airline_code);
-                        cout << "   |   " << a.getName() <<  "\n";
-                        cout << "   v   \n";
-                        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-                        pointer++;
-                        tempP++;
-                    }
-                }
+                showBestTrajectories(airportsStartingPoint,airportsDestination,{});
                 break;
             default:
                 cout << "!!Invalid Input!!\n\n";
@@ -276,28 +225,7 @@ void FlightManager::askForAirline(list<int> airportsStartingPoint, list<int> air
         askForAirline(airportsStartingPoint, airportsDestination, airlinesList);
     }
     else if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N"){
-        auto l = flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlinesList);
-        l.unique();
-        cout << "There are " <<  l.size() << " minimal trajectories!\n";
-        for (auto p : l){
-            cout << "One possible path would be:\n";
-            auto pointer = p.begin();
-            auto nodeIterator = airports.find({*pointer});
-            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-            auto tempP = pointer;
-            pointer++;
-            while (pointer != p.end()){
-                auto tempNode = airports.find({*tempP});
-                nodeIterator = airports.find({*pointer});
-                string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),airlinesList);
-                Airline a = getAirline(airline_code);
-                cout << "   |   " << a.getName() <<  "\n";
-                cout << "   v   \n";
-                cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-                pointer++;
-                tempP++;
-            }
-        }
+        showBestTrajectories(airportsStartingPoint,airportsDestination,airlinesList);
     }
     else{
         cout << "Invalid Input!\n";
@@ -830,3 +758,39 @@ Airline FlightManager::getAirline(const string& code) {
     }
     return {""};
 }
+
+void FlightManager::showBestTrajectories(const list<int>& s, const list<int>& d, const list<string>& a) {
+    auto l = flights.calculateBestTrajectory(s, d, a);
+    l.unique();
+    cout << "There are " <<  l.size() << " minimal trajectories!\n";
+    for (auto p : l){
+        cout << "One possible path would be:\n";
+        auto pointer = p.begin();
+        auto nodeIterator = airports.find({*pointer});
+        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+        auto tempP = pointer;
+        pointer++;
+        while (pointer != p.end()){
+            auto tempNode = airports.find({*tempP});
+            nodeIterator = airports.find({*pointer});
+            string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),a);
+            Airline airline1 = getAirline(airline_code);
+            cout << "   |   " << airline1.getName() <<  "\n";
+            cout << "   v   \n";
+            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+            pointer++;
+            tempP++;
+        }
+        cout << "Do you want to see another trajectory?(y/n)";
+        string answer;
+        cin >> answer;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(256,'\n');
+            answer = "y";
+        }
+        if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N") break;
+    }
+}
+
+
