@@ -132,16 +132,12 @@ int Graph::getNumFlightsTotal(){
     return count;
 }
 
-int Graph::getNumFlightsAirport(const string& code){
+int Graph::getNumFlightsAirport(int v){
     int count = 0;
-    for(auto& x : nodes){
-        if(x.airport == code){
-            count += x.adj.size();
-        }
-    }
+    count += nodes[v].adj.size();
     for(auto& x : nodes){
         for(auto& i : x.adj){
-            if(getAirport(i.dest) == code) count++;
+            if(i.dest == v) count++;
         }
     }
     return count;

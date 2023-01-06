@@ -65,7 +65,7 @@ public:
 
     int getNumFlightsTotal();
 
-    int getNumFlightsAirport(const string& code);
+    int getNumFlightsAirport(int v);
 
     pair<pair<std::string, std::string>, int> diameter();
 };

@@ -510,7 +510,11 @@ bool FlightManager::numberOfDestinyCountries(const Airport &airport) {
         airport.getName() << " go to.\n";
     return true;
 }
-
+/**
+ * Shows in the standard output the number of airports one can go to from airport with at most a number provided by the user
+ * @param airport
+ * @return
+ */
 bool FlightManager::numberReachable(const Airport &airport) {
     cout << "What is the maximum amount of flights that we should consider?\n";
     int amount_of_flights;
@@ -673,7 +677,7 @@ void FlightManager::airportMostFlights(){
     string maxAirport;
     list<int> lFlights;
     for (auto& x : airports){
-        currentFlights = flights.getNumFlightsAirport(x.getCode());
+        currentFlights = flights.getNumFlightsAirport(x.getNode());
 
         if (currentFlights > maxFlights){
             maxFlights = currentFlights;
