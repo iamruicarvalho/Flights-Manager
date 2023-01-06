@@ -192,6 +192,7 @@ list<string> Graph::getAirportsReachable(int v, int f) {
  */
 list<list<string>> Graph::calculateBestTrajectory(const list<int>& startup, const list<int>& end, const list<string>& airlines) {
     for (int i=1; i<=n; i++) nodes[i].visited = false;
+
     list<list<string>> res;
     int max_distance = 0;
 
