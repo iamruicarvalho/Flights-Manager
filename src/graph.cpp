@@ -7,7 +7,13 @@
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
 }
 
-// Add edge from source to destination with a certain weight
+/**
+ * Add edge from source to destination with a certain weight
+ * @param src
+ * @param dest
+ * @param airline
+ * @param weight
+ */
 void Graph::addEdge(int src, int dest, const string& airline , int weight) {
     if (src<1 || src>n || dest<1 || dest>n) return;
     nodes[src].adj.push_back({dest, weight,airline});
@@ -15,19 +21,25 @@ void Graph::addEdge(int src, int dest, const string& airline , int weight) {
 }
 
 
-// Depth-First Search: example implementation
+/**
+ * Depth-First Search: example implementation
+ * @param v
+ */
 void Graph::dfs(int v) {
     // show node order
     cout << v << " ";
     nodes[v].visited = true;
-    for (auto e : nodes[v].adj) {
+    for (const auto& e : nodes[v].adj) {
         int w = e.dest;
         if (!nodes[w].visited)
             dfs(w);
     }
 }
 
-// Breadth-First Search: example implementation
+/**
+ * Breadth-First Search: example implementation
+ * @param v
+ */
 void Graph::bfs(int v) {
     for (int i=1; i<=n; i++) nodes[i].visited = false;
     queue<int> q; // queue of unvisited nodes
@@ -37,7 +49,7 @@ void Graph::bfs(int v) {
         int u = q.front(); q.pop();
         // show node order
         //cout << u << " ";
-        for (auto e : nodes[u].adj) {
+        for (const auto& e : nodes[u].adj) {
             int w = e.dest;
             if (!nodes[w].visited) {
                 q.push(w);
@@ -63,7 +75,7 @@ pair<pair<string ,string >, int> Graph::diameter() {
         while (!q.empty()) {
             int u = q.front();
             q.pop();
-            for (auto e: nodes[u].adj) {
+            for (const auto& e: nodes[u].adj) {
                 int w = e.dest;
                 if (!nodes[w].visited) {
                     q.push(w);
@@ -80,11 +92,23 @@ pair<pair<string ,string >, int> Graph::diameter() {
     }
     return make_pair(make_pair(startingAirport, endingAirport), max_dist);
 }
-
+/**
+ * Changes the code of the airport of node v to airport
+ *
+ * Complexity : constant
+ * @param v
+ * @param airport
+ */
 void Graph::setAirport(int v, const string &airport) {
     nodes[v].airport = airport;
 }
 
+/**
+ * Gives the flights that leave a certain airport
+ * Complexity : O(n) being n the amount of flights that leave airport v
+ * @param node of the airport
+ * @return list of pair each containing the node of the destination airport and the code of the airline
+ */
 list<pair<int, string>> Graph::getFlights( int node){
     list<pair<int, string>> res ;
     for (const Edge& e : nodes[node].adj)
@@ -92,6 +116,10 @@ list<pair<int, string>> Graph::getFlights( int node){
     return res;
 }
 
+/**
+ * @param v
+ * @return Code of the airport
+ */
 string Graph::getAirport(int v) {
     return nodes[v].airport;
 }
@@ -104,7 +132,7 @@ int Graph::getNumFlightsTotal(){
     return count;
 }
 
-int Graph::getNumFlightsAirport(string code){
+int Graph::getNumFlightsAirport(const string& code){
     int count = 0;
     for(auto& x : nodes){
         if(x.airport == code){
@@ -119,7 +147,14 @@ int Graph::getNumFlightsAirport(string code){
     return count;
 }
 
-
+/**
+ * Calculates the airports that you can go to from airport v with a maximum number of flights f.
+ *
+ * Complexity : O(|V| + |E|) where |V| and |E| is the cardinality of set of vertices and edges respectively.
+ * @param v node of the starting airport
+ * @param f maximum number of flights
+ * @return list with the codes of the airports
+ */
 list<string> Graph::getAirportsReachable(int v, int f) {
     list<string> res;
     for (int i=1; i<=n; i++) nodes[i].visited = false;
@@ -132,7 +167,7 @@ list<string> Graph::getAirportsReachable(int v, int f) {
         if (nodes[u].distance > f)
             break;
         res.push_back(nodes[u].airport);
-        for (auto e : nodes[u].adj) {
+        for (const auto& e : nodes[u].adj) {
             int w = e.dest;
             if (!nodes[w].visited) {
                 nodes[w].distance = nodes[u].distance +1;
@@ -145,6 +180,16 @@ list<string> Graph::getAirportsReachable(int v, int f) {
     return res;
 }
 
+/**
+ * Calculates best trajectories.
+ *
+ * Complexity : O(|V|*|E|) where |V| and |E| is the cardinality of set of vertices and edges respectively, because
+ * in the worst case scenario we will traverse a node as many edges there are that go from other nodes to this one
+ * @param startup starting airports
+ * @param end destination airports
+ * @param airlines airlines to be used, if empty all airlines used
+ * @return trajectories
+ */
 list<list<string>> Graph::calculateBestTrajectory(const list<int>& startup, const list<int>& end, const list<string>& airlines) {
     for (int i=1; i<=n; i++) nodes[i].visited = false;
     list<list<string>> res;
@@ -193,12 +238,19 @@ list<list<string>> Graph::calculateBestTrajectory(const list<int>& startup, cons
     return res;
 }
 
+/**
+ * Searches for the airline of a flight that is included in a given list
+ * @param a Starting node
+ * @param b Destination node
+ * @param air Airline Codes
+ * @return Airline code
+ */
 string Graph::getAirline(int a, int b, list<string> air) {
-    for (Edge e : nodes[a].adj){
+    for (const Edge& e : nodes[a].adj){
         if (e.dest != b) continue;
         if (air.empty() || find(air.begin(),air.end(),e.airline) != air.end()) return e.airline;
     }
-    return "";
+    return {};
 }
 
 
