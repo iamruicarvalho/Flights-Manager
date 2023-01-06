@@ -206,7 +206,8 @@ list<list<string>> Graph::calculateBestTrajectory(const list<int>& startup, cons
     while (!q.empty()) {
         list<int> nodes_list = q.front();
         int u = nodes_list.back();
-        if (max_distance != 0 && nodes[u].distance == max_distance) break;
+        if (max_distance != 0 && nodes[u].distance == max_distance)
+            break;
         q.pop();
         for (const auto& e : nodes[u].adj) {
             int w = e.dest;
@@ -251,6 +252,53 @@ string Graph::getAirline(int a, int b, list<string> air) {
         if (air.empty() || find(air.begin(),air.end(),e.airline) != air.end()) return e.airline;
     }
     return {};
+}
+
+list<list<string>> Graph::calculateAllPossibleTrajectories(int numberOfFlights, const list<int>& startup,const list <int>& end,const list<string>& airlines) {
+    // show node order
+    /*cout << v << " ";
+    nodes[v].visited = true;
+    for (auto e : nodes[v].adj) {
+        int w = e.dest;
+        if (!nodes[w].visited)
+            dfs(w);
+    }*/
+
+    /*
+     * fazer dfs e ver se existe um caminho entre inicio e fim cujo numero maximo de aeroportos a visitar seja o introduzido pelo user
+     */
+    list<list<int>> startupList;
+    for (int s : startup) {
+        list<int> temp;
+        temp.push_back(s);
+        startupList.push_back(temp);
+        nodes[s].visited = true;
+        nodes[s].distance = 0;
+    }
+    list<list<int>> res;                // need to ask for number of airports to visit
+
+    list<int> nodesList = startupList.front();
+    int k = nodesList.back();
+    nodes[k].visited = true;
+    nodes[k].distance = 0;
+    for (Edge e : nodes[k].adj) {
+        int w = e.dest;
+        if (!nodes[w].visited && (airlines.empty() || find(airlines.begin(), airlines.end(), e.airline) != airlines.end())) {
+            if (find(end.begin(), end.end(), w) != end.end()) {
+                calculateAllPossibleTrajectories(n, startup, end, airlines);
+                nodes[w].distance = nodes[k].distance + 1;
+            }
+        }
+    }
+    int count = 0;
+    for (int s : startup) {
+        for (int v = 1; v <= n; v++) {
+            if ((nodes[v].distance - nodes[s].distance) == numberOfFlights) {
+                // try to make a function that returns all paths between two nodes as a vector of lists of nodes(airports)
+                // then, for each list in the vector, print the airports in the list
+            }
+        }
+    }
 }
 
 

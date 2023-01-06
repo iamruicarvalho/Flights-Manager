@@ -212,7 +212,7 @@ void FlightManager::askForAirline(list<int> airportsStartingPoint, list<int> air
 
     airlinesList.push_back(airline_pointer->getCode());
 
-    cout << "Do you want to fly with another airline as well?\n";
+    cout << "Do you want to fly with another airline as well? (y/n)\n";
     string answer;
     cin >> answer;
     if (cin.fail()){
@@ -638,16 +638,18 @@ void FlightManager::numberOfCountries(){
     cout << "Total: " << unique_countries.size() << " Countries\n";
 }
 
+
 void FlightManager::numberOfCities(){
     cout << "These are the cities reachable by plane:";
-    unordered_set<string> unique_cities;
+    unordered_set<string> unique_countries_cities;
     for (auto& x : airports){
-        if (unique_cities.find(x.getCity()) == unique_cities.end()) {
-            cout << x.getCity() << "\n";
-            unique_cities.insert(x.getCity());
+        string city_country = x.getCity() + " , " + x.getCountry();
+        if (unique_countries_cities.find(city_country) == unique_countries_cities.end()) {
+            cout << city_country << "\n";
+            unique_countries_cities.insert(city_country);
         }
     }
-    cout << "Total: " << unique_cities.size() << " Cities\n";
+    cout << "Total: " << unique_countries_cities.size() << " Cities\n";
 }
 
 void FlightManager::numberOfFlights(){
