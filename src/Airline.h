@@ -31,6 +31,7 @@ public:
     void setCountry(const string &country);
 
     bool operator<(const Airline& a2) const;
+    bool operator== (const Airline& a2) const;
 };
 
 #endif //AEDPROJECT2_AIRLINE_H

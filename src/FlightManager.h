@@ -68,8 +68,14 @@ public:
     void askForOtherInfoMenu();
     void numberOfCountries();
     void numberOfCities();
-
+    Airline getAirline(const string& code);
     void averageAirportsByCountry();
+    void showBestTrajectories(const list<int>& s , const list<int>& d , const list<string>& a);
+    void numberOfFlights();
+
+    void airportMostFlights();
+
+    void diameter();
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H

@@ -47,6 +47,40 @@ void Graph::bfs(int v) {
     }
 }
 
+pair<pair<string ,string >, int> Graph::diameter() {
+    int max_dist = 0;
+    string startingAirport;
+    string endingAirport;
+    for(int a = 1; a <= n; a++) {
+        for (int i = 1; i <= n; i++) {
+            nodes[i].visited = false;
+            nodes[i].distance = -1;
+        }
+        queue<int> q;
+        q.push(a);
+        nodes[a].visited = true;
+        nodes[a].distance = 0;
+        while (!q.empty()) {
+            int u = q.front();
+            q.pop();
+            for (auto e: nodes[u].adj) {
+                int w = e.dest;
+                if (!nodes[w].visited) {
+                    q.push(w);
+                    nodes[w].visited = true;
+                    nodes[w].distance = nodes[u].distance + 1;
+                    if (nodes[w].distance > max_dist){
+                        max_dist = nodes[w].distance;
+                        startingAirport = nodes[a].airport;
+                        endingAirport = nodes[w].airport;
+                    }
+                }
+            }
+        }
+    }
+    return make_pair(make_pair(startingAirport, endingAirport), max_dist);
+}
+
 void Graph::setAirport(int v, const string &airport) {
     nodes[v].airport = airport;
 }
@@ -61,6 +95,30 @@ list<pair<int, string>> Graph::getFlights( int node){
 string Graph::getAirport(int v) {
     return nodes[v].airport;
 }
+
+int Graph::getNumFlightsTotal(){
+    int count = 0;
+    for(auto& x : nodes){
+        count += x.adj.size();
+    }
+    return count;
+}
+
+int Graph::getNumFlightsAirport(string code){
+    int count = 0;
+    for(auto& x : nodes){
+        if(x.airport == code){
+            count += x.adj.size();
+        }
+    }
+    for(auto& x : nodes){
+        for(auto& i : x.adj){
+            if(getAirport(i.dest) == code) count++;
+        }
+    }
+    return count;
+}
+
 
 list<string> Graph::getAirportsReachable(int v, int f) {
     list<string> res;
@@ -135,6 +193,15 @@ list<list<string>> Graph::calculateBestTrajectory(const list<int>& startup, cons
     }
     return res;
 }
+
+string Graph::getAirline(int a, int b, list<string> air) {
+    for (Edge e : nodes[a].adj){
+        if (e.dest != b) continue;
+        if (air.empty() || find(air.begin(),air.end(),e.airline) != air.end()) return e.airline;
+    }
+    return "";
+}
+
 
 
 

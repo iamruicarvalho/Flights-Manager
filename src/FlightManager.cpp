@@ -82,30 +82,6 @@ void FlightManager::lerFicheiros() {
         flights.addEdge(source_pointer->getNode(),target_pointer->getNode(),airline);
     }
     flights_file.close();
-
-    //test
-    auto a1p = airports.find({"USU"});
-    auto a2p = airports.find({"DVO"});
-    int a1n = a1p->getNode();
-    int a2n = a2p->getNode();
-
-    auto l = flights.calculateBestTrajectory({a1n},{a2n},{});
-    l.unique();
-    cout << "There are " <<  l.size() << " minimal trajectories!\n";
-    for (auto p : l){
-        cout << "One possible path would be:\n";
-        auto pointer = p.begin();
-        auto nodeIterator = airports.find({*pointer});
-        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-        pointer++;
-        while (pointer != p.end()){
-            nodeIterator = airports.find({*pointer});
-            cout << "   |   \n";
-            cout << "   v   \n";
-            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
-            pointer++;
-        }
-    }
 }
 
 FlightManager::FlightManager() : flights(0){}
@@ -206,11 +182,11 @@ void FlightManager::airline(list<int> airportsStartingPoint, list<int> airportsD
             case 1:
                 askForAirline(airportsStartingPoint, airportsDestination, airlines);
                 break;
-            case 2:
-                flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlines);
-                break;
             case 3:
                 return;
+            case 2:
+                showBestTrajectories(airportsStartingPoint,airportsDestination,{});
+                break;
             default:
                 cout << "!!Invalid Input!!\n\n";
         }
@@ -249,7 +225,7 @@ void FlightManager::askForAirline(list<int> airportsStartingPoint, list<int> air
         askForAirline(airportsStartingPoint, airportsDestination, airlinesList);
     }
     else if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N"){
-        flights.calculateBestTrajectory(airportsStartingPoint, airportsDestination, airlinesList);
+        showBestTrajectories(airportsStartingPoint,airportsDestination,airlinesList);
     }
     else{
         cout << "Invalid Input!\n";
@@ -620,9 +596,18 @@ void FlightManager::askForOtherInfo(){
                 numberOfCities();
                 break;
             case 3:
-                averageAirportsByCountry();
+                numberOfFlights();
                 break;
             case 4:
+                averageAirportsByCountry();
+                break;
+            case 5:
+                airportMostFlights();
+                break;
+            case 6:
+                diameter();
+                break;
+            case 7:
                 KeepRunning = false;
                 break;
             default:
@@ -643,16 +628,22 @@ void FlightManager::numberOfCountries(){
     cout << "Total: " << unique_countries.size() << " Countries\n";
 }
 
+
 void FlightManager::numberOfCities(){
     cout << "These are the cities reachable by plane:";
-    unordered_set<string> unique_cities;
+    unordered_set<string> unique_countries_cities;
     for (auto& x : airports){
-        if (unique_cities.find(x.getCity()) == unique_cities.end()) {
-            cout << x.getCity() << "\n";
-            unique_cities.insert(x.getCity());
+        string city_country = x.getCity() + " , " + x.getCountry();
+        if (unique_countries_cities.find(city_country) == unique_countries_cities.end()) {
+            cout << city_country << "\n";
+            unique_countries_cities.insert(city_country);
         }
     }
-    cout << "Total: " << unique_cities.size() << " Cities\n";
+    cout << "Total: " << unique_countries_cities.size() << " Cities\n";
+}
+
+void FlightManager::numberOfFlights(){
+    cout << "There are " << flights.getNumFlightsTotal() << " flights in the database!\n";
 }
 
 void FlightManager::averageAirportsByCountry(){
@@ -664,6 +655,28 @@ void FlightManager::averageAirportsByCountry(){
     float average = airports.size() / unique_countries.size();
 
     cout << "The average number of airports in a country is: " << average << "\n";
+}
+
+void FlightManager::airportMostFlights(){
+    int maxFlights = 0;
+    int currentFlights = 0;
+    string maxAirport;
+    list<int> lFlights;
+    for (auto& x : airports){
+        currentFlights = flights.getNumFlightsAirport(x.getCode());
+
+        if (currentFlights > maxFlights){
+            maxFlights = currentFlights;
+            maxAirport = x.getName();
+        }
+    }
+    cout << "The airport with the most flights is " << maxAirport << "with " << maxFlights << " flights either arriving or leaving it" << "\n";
+}
+
+void FlightManager::diameter(){
+    pair<pair<string, string>, int> diameter = flights.diameter();
+
+    cout << "The diameter of the graph is " << diameter.second << " , the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport\n";
 }
 
 //------------------------Menus-------------------------------
@@ -730,8 +743,54 @@ void FlightManager::askForOtherInfoMenu(){
     cout << "| Other Info :                           |\n";
     cout << "| 1- Number of countries                 |\n";
     cout << "| 2- Number of cities                    |\n";
-    cout << "| 3- Avg number of Airports in a Country |\n";
-    cout << "| 4- Go back                             |\n";
+    cout << "| 3- Number of Flights                   |\n";
+    cout << "| 4- Avg number of Airports in a Country |\n";
+    cout << "| 5- Airport with the most flights       |\n";
+    cout << "| 6- Diameter of the graph               |\n";
+    cout << "| 7- Go back                             |\n";
     cout << "==========================================\n";
     cout << "Pick an option:";
 }
+
+Airline FlightManager::getAirline(const string& code) {
+    for (Airline a : airlines){
+        if (a.getCode() == code) return a;
+    }
+    return {""};
+}
+
+void FlightManager::showBestTrajectories(const list<int>& s, const list<int>& d, const list<string>& a) {
+    auto l = flights.calculateBestTrajectory(s, d, a);
+    l.unique();
+    cout << "There are " <<  l.size() << " minimal trajectories!\n";
+    for (auto p : l){
+        cout << "One possible path would be:\n";
+        auto pointer = p.begin();
+        auto nodeIterator = airports.find({*pointer});
+        cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+        auto tempP = pointer;
+        pointer++;
+        while (pointer != p.end()){
+            auto tempNode = airports.find({*tempP});
+            nodeIterator = airports.find({*pointer});
+            string airline_code = flights.getAirline(tempNode->getNode(),nodeIterator->getNode(),a);
+            Airline airline1 = getAirline(airline_code);
+            cout << "   |   " << airline1.getName() <<  "\n";
+            cout << "   v   \n";
+            cout << nodeIterator->getName() << ',' << nodeIterator->getCity() << "\n";
+            pointer++;
+            tempP++;
+        }
+        cout << "Do you want to see another trajectory?(y/n)";
+        string answer;
+        cin >> answer;
+        if (cin.fail()){
+            cin.clear();
+            cin.ignore(256,'\n');
+            answer = "y";
+        }
+        if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N") break;
+    }
+}
+
+
