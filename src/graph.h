@@ -79,6 +79,7 @@ public:
     list<int> articulationPoints();
     void dfs_articulation_points(int v, int &order, li &l);
     // show distance between two airports
+    int getNumAirlinesAirport(int v);
 };
 
 #endif

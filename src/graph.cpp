@@ -1,6 +1,4 @@
-// AED 2022/2023 - Aula Pratica 10
-// Pedro Ribeiro (DCC/FCUP) [last update: 27/11/2022]
-
+#include <unordered_set>
 #include "graph.h"
 #include "Airport.h"
 
@@ -175,6 +173,21 @@ int Graph::getNumFlightsAirport(int v){
         }
     }
     return count;
+}
+
+int Graph::getNumAirlinesAirport(int v){
+    unordered_set<string> airlines;
+    for(auto& x : nodes){
+        for(auto& i : x.adj){
+            if(i.dest == v && airlines.find(i.airline) == airlines.end()) airlines.insert(i.airline);
+        }
+    }
+    for(auto& x : nodes[v].adj){
+        if(airlines.find(x.airline) == airlines.end()){
+            airlines.insert(x.airline);
+        }
+    }
+    return airlines.size();
 }
 
 /**

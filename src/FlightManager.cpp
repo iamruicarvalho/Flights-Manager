@@ -36,7 +36,7 @@ void FlightManager::lerFicheiros() {
         temp.push_back(airport);
     }
     airports_file.close();
-    cout << "There is " << temp.size() <<  " airports!\n";
+    cout << "There are " << temp.size() <<  " airports!\n";
 
     cout << "Loading airlines...\n";
     ifstream airlines_file;
@@ -58,9 +58,9 @@ void FlightManager::lerFicheiros() {
         airlines.insert(airline);
     }
     airlines_file.close();
-    cout << "There is " << airlines.size() <<  " airlines!\n";
+    cout << "There are " << airlines.size() <<  " airlines!\n";
 
-    cout << "Loading flights...\n\n";
+    cout << "Loading flights...\n";
     ifstream flights_file;
     flights_file.open("../resources/flights.csv");
     if (!flights_file.is_open()){
@@ -88,6 +88,7 @@ void FlightManager::lerFicheiros() {
         flights.addEdge(source_pointer->getNode(),target_pointer->getNode(),airline);
     }
     flights_file.close();
+    cout << "There are " << flights.getNumFlightsTotal() <<  " flights!\n\n";
 }
 
 FlightManager::FlightManager() : flights(0){}
@@ -625,12 +626,15 @@ void FlightManager::askForOtherInfo(){
                 airportMostFlights();
                 break;
             case 6:
-                diameter();
+                airportMostAirlines();
                 break;
             case 7:
-                articulationPoints();
+                diameter();
                 break;
             case 8:
+                articulationPoints();
+                break;
+            case 9:
                 KeepRunning = false;
                 break;
             default:
@@ -684,7 +688,6 @@ void FlightManager::airportMostFlights(){
     int maxFlights = 0;
     int currentFlights = 0;
     string maxAirport;
-    list<int> lFlights;
     for (auto& x : airports){
         currentFlights = flights.getNumFlightsAirport(x.getNode());
 
@@ -693,7 +696,22 @@ void FlightManager::airportMostFlights(){
             maxAirport = x.getName();
         }
     }
-    cout << "The airport with the most flights is " << maxAirport << "with " << maxFlights << " flights either arriving or leaving it" << "\n";
+    cout << "The airport with the most flights is " << maxAirport << " with " << maxFlights << " flights either arriving or leaving it" << "\n";
+}
+
+void FlightManager::airportMostAirlines(){
+    int maxAirlines = 0;
+    int currentAirlines = 0;
+    string maxAirport;
+    for (auto& x : airports){
+        currentAirlines = flights.getNumAirlinesAirport(x.getNode());
+
+        if (currentAirlines > maxAirlines){
+            maxAirlines = currentAirlines;
+            maxAirport = x.getName();
+        }
+    }
+    cout << "The airport with the most airlines is " << maxAirport << " with flights from " << maxAirlines << " airlines either arriving or leaving it" << "\n";
 }
 
 void FlightManager::diameter(){
@@ -778,9 +796,10 @@ void FlightManager::askForOtherInfoMenu(){
     cout << "| 3- Number of Flights                   |\n";
     cout << "| 4- Avg number of Airports in a Country |\n";
     cout << "| 5- Airport with the most flights       |\n";
-    cout << "| 6- Diameter of the graph               |\n";
-    cout << "| 7- Articulation Points                 |\n";
-    cout << "| 8- Go back                             |\n";
+    cout << "| 6- Airport with the most airlines     |\n";
+    cout << "| 7- Diameter of the graph               |\n";
+    cout << "| 8- Articulation Points                 |\n";
+    cout << "| 9- Go back                             |\n";
     cout << "==========================================\n";
     cout << "Pick an option:";
 }
