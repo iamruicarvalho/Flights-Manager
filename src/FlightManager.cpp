@@ -4,6 +4,12 @@
 #include "FlightManager.h"
 #include <cmath>
 
+/**
+ * Reads files and builds graph with flights,hash table with airports and list with airlines.
+ *
+ * Complexity : O(|V|+|A|+|E|) where |V|,|E| and |A| is the cardinality of set of airports,flights and airlines
+ * respectively.
+ */
 void FlightManager::lerFicheiros() {
     cout << "Loading airports...\n";
     ifstream airports_file;
@@ -791,7 +797,7 @@ Airline FlightManager::getAirline(const string& code) {
  * @param s list of the starting airports
  * @param d list of the destination airports
  * @param a list of the airlines to be used in the trajectory
- * Note : if a is empty, all airlines will be used
+ * Note : if a is empty, all airlines will be considered when calculating trajectories
  */
 void FlightManager::showBestTrajectories(const list<int>& s, const list<int>& d, const list<string>& a) {
     auto l = flights.calculateBestTrajectory(s, d, a);

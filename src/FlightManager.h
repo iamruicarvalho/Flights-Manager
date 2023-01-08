@@ -75,9 +75,6 @@ public:
     void airportMostFlights();
     void diameter();
     void articulationPoints();
-    bool existPath(int v, int k);
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H
-//podiamos perguntar se queriam listar por exemplo as airlines, ou os flight
-//depois de perguntar o destino, podiamos mostrar o path

@@ -305,7 +305,7 @@ void Graph::showPath(int orig, int dest) {
 }*/
 
 /**
- * Auxiliar function that helps to calculate the articulation points
+ * Auxiliary function that helps to calculate the articulation points
  * @param v
  * @param order
  * @param l
@@ -340,7 +340,7 @@ void Graph::dfs_articulation_points(int v, int &order, list<int> &l) {
  */
 list<int> Graph::articulationPoints() {
     list<int> answer;
-    for (Node node : nodes) {
+    for (Node& node : nodes) {
         node.visited = false;
         node.inStack = false;
         node.num = 0;
