@@ -38,6 +38,12 @@ public:
     void setLongitude(double longitude);
     void setNode(int node);
 
+    /**
+     * Calculates the distance between an airport and a location
+     * @param latitude1 of location
+     * @param longitude1 of location
+     * @return distance
+     */
     double distance(double latitude1, double longitude1) const;
 };
 

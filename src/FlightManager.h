@@ -72,9 +72,7 @@ public:
     void averageAirportsByCountry();
     void showBestTrajectories(const list<int>& s , const list<int>& d , const list<string>& a);
     void numberOfFlights();
-
     void airportMostFlights();
-
     void diameter();
 };
 

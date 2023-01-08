@@ -445,7 +445,10 @@ void FlightManager::askInfoToTakeFromAirport(const Airport& airport) {
 
     }
 }
-
+/**
+ * Shows in the standard output the number of flights that leave airport
+ * @param airport
+ */
 bool FlightManager::numberOfFlights(const Airport& airport) {
     int node = airport.getNode();
     list<pair<int , string>> flights_and_destination = flights.getFlights(node);
@@ -458,7 +461,10 @@ bool FlightManager::numberOfFlights(const Airport& airport) {
      */
     return true;
 }
-
+/**
+ * Shows in the standard output the number of airlines that have flights that leave airport
+ * @param airport
+ */
 bool FlightManager::numberOfAirlines(const Airport &airport) {
     int node = airport.getNode();
     list<pair<int , string>> flights_and_destination = flights.getFlights(node);
@@ -470,7 +476,10 @@ bool FlightManager::numberOfAirlines(const Airport &airport) {
          airport.getName() << ".\n";
     return true;
 }
-
+/**
+ * Shows in the standard output the number of different destinies one can go to from airport
+ * @param airport
+ */
 bool FlightManager::numberOfDestinies(const Airport &airport) {
     int node = airport.getNode();
     list<pair<int , string>> flights_and_destination = flights.getFlights(node);
@@ -501,7 +510,11 @@ bool FlightManager::numberOfDestinyCountries(const Airport &airport) {
         airport.getName() << " go to.\n";
     return true;
 }
-
+/**
+ * Shows in the standard output the number of airports one can go to from airport with at most a number provided by the user
+ * @param airport
+ * @return
+ */
 bool FlightManager::numberReachable(const Airport &airport) {
     cout << "What is the maximum amount of flights that we should consider?\n";
     int amount_of_flights;
@@ -541,6 +554,7 @@ bool FlightManager::numberReachable(const Airport &airport) {
                 cout << "Invalid input!\n";
         }
     }
+    return true;
 }
 
 bool FlightManager::airportsReachable(const Airport &airport, int number_of_flights) {
@@ -663,7 +677,7 @@ void FlightManager::airportMostFlights(){
     string maxAirport;
     list<int> lFlights;
     for (auto& x : airports){
-        currentFlights = flights.getNumFlightsAirport(x.getCode());
+        currentFlights = flights.getNumFlightsAirport(x.getNode());
 
         if (currentFlights > maxFlights){
             maxFlights = currentFlights;
@@ -759,6 +773,13 @@ Airline FlightManager::getAirline(const string& code) {
     return {""};
 }
 
+/**
+ * Uses the lists provided to calculate the best trajectories and shows them on the standard output
+ * @param s list of the starting airports
+ * @param d list of the destination airports
+ * @param a list of the airlines to be used in the trajectory
+ * Note : if a is empty, all airlines will be used
+ */
 void FlightManager::showBestTrajectories(const list<int>& s, const list<int>& d, const list<string>& a) {
     auto l = flights.calculateBestTrajectory(s, d, a);
     l.unique();

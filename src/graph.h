@@ -43,48 +43,19 @@ public:
      */
     void addEdge(int src, int dest,const string& airline, int weight = 1);
 
-    /**
-     * Depth-First Search: example implementation
-     * @param v
-     */
+
     void dfs(int v);
 
-    /**
-     * Breadth-First Search: example implementation
-     * @param v
-     */
+
     void bfs(int v);
 
-    /**
-     * Changes the code of the airport of node v to airport
-     *
-     * Complexity : constant
-     * @param v
-     * @param airport
-     */
     void setAirport(int v , const string& airport);
 
-    /**
-     * Gives the flights that leave a certain airport
-     * Complexity : O(n) being n the amount of flights that leave airport v
-     * @param node of the airport
-     * @return list of pair each containing the node of the destination airport and the code of the airline
-     */
+
     list<pair<int , string>> getFlights(int node);
 
-    /**
-     * @param v
-     * @return Code of the airport
-     */
     string getAirport(int v);
 
-    /**
-     * Calculates the airports that you can go to from airport v with a maximum number of flights f
-     * Complexity : O(|V| + |E|) where |V| and |E| is the cardinality of set of vertices and edges respectively.
-     * @param v node of the starting airport
-     * @param f maximum number of flights
-     * @return list with the codes of the airports
-     */
     list<string> getAirportsReachable(int v, int f);
 
     list<list<string>> calculateBestTrajectory(const list<int>& startup,const list <int>& end,const list<string>& airlines);
@@ -94,7 +65,7 @@ public:
     string getAirline(int a , int b , list<string> air);
     int getNumFlightsTotal();
 
-    int getNumFlightsAirport(string code);
+    int getNumFlightsAirport(int v);
 
     pair<pair<std::string, std::string>, int> diameter();
     // show articulation points
