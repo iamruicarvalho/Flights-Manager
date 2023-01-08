@@ -74,6 +74,8 @@ public:
     void numberOfFlights();
     void airportMostFlights();
     void diameter();
+    void articulationPoints();
+    bool existPath(int v, int k);
 };
 
 #endif //AEDPROJECT2_FLIGHTMANAGER_H

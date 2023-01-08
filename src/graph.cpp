@@ -266,6 +266,7 @@ string Graph::getAirline(int a, int b, list<string> air) {
     return {};
 }
 
+/*
 bool Graph::existPath(int v, int k) {
     for (Node node : nodes) {
         node.visited = false;
@@ -282,9 +283,59 @@ void Graph::showPath(int orig, int dest) {
     if (existPath(orig, dest)) {
         dfsShow(orig);
     }
+}*/
+
+/**
+ * Auxiliar function that helps to calculate the articulation points
+ * @param v
+ * @param order
+ * @param l
+ */
+void Graph::dfs_articulation_points(int v, int &order, list<int> &l) {
+    nodes[v].visited = true;
+    nodes[v].num = nodes[v].low = order++;
+
+    int children = 0;
+    bool articulation = false;
+
+    for (Edge e : nodes[v].adj) {
+        int w = e.dest;
+        if (!nodes[w].visited) {
+            children++;
+            dfs_articulation_points(w, order, l);
+            nodes[v].low = min(nodes[v].low, nodes[w].low);
+            if (nodes[w].low >= nodes[v].num)
+                articulation = true;            // v is an articulation point
+        }
+        else
+            nodes[v].low = min(nodes[v].low, nodes[w].num);
+    }
+
+    // if it is the root node (root.num = 1), it has to have more than 1 child or ...
+    if ((nodes[v].num == 1 && children > 1) || (nodes[v].num > 1 && articulation))
+        l.push_front(v);
 }
+/**
+ * Function that calculates articulation points
+ * @return list of articulation points
+ */
+list<int> Graph::articulationPoints() {
+    list<int> answer;
+    for (Node node : nodes) {
+        node.visited = false;
+        node.inStack = false;
+        node.num = 0;
+        node.low = 0;
+    }
 
-
+    int order = 1;
+    for (int v = 1; v <= n; v++) {
+        if (!nodes[v].visited) {
+            dfs_articulation_points(v, order, answer);
+        }
+    }
+    return answer;
+}
 
 
 
