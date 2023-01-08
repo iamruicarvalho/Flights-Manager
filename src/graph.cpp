@@ -152,7 +152,7 @@ string Graph::getAirport(int v) {
 int Graph::getNumFlightsTotal(){
     int count = 0;
     for(auto& x : nodes){
-        count += x.adj.size();
+        count += (int)x.adj.size();
     }
     return count;
 }
@@ -166,7 +166,7 @@ int Graph::getNumFlightsTotal(){
  */
 int Graph::getNumFlightsAirport(int v){
     int count = 0;
-    count += nodes[v].adj.size();
+    count += (int)nodes[v].adj.size();
     for(auto& x : nodes){
         for(auto& i : x.adj){
             if(i.dest == v) count++;
@@ -174,7 +174,13 @@ int Graph::getNumFlightsAirport(int v){
     }
     return count;
 }
-
+/**
+ * Calculates the number of different airlines which have flights going to or from airport v.
+ *
+ * Complexity : O(|V|+|E|) where |V| and |E| are the cardinality of set of vertices and edges respectively.
+ * @param v node of airport
+ * @return number of airlines
+ */
 int Graph::getNumAirlinesAirport(int v){
     unordered_set<string> airlines;
     for(auto& x : nodes){
@@ -187,7 +193,7 @@ int Graph::getNumAirlinesAirport(int v){
             airlines.insert(x.airline);
         }
     }
-    return airlines.size();
+    return (int)airlines.size();
 }
 
 /**

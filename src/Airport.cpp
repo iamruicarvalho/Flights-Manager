@@ -65,6 +65,13 @@ void Airport::setLongitude(double longitude) {
     this->longitude = longitude;
 }
 
+/**
+ * Calculates and returns the distance between an airport and a location provided on the arguments as latitude and
+ * longitude.
+ * @param latitude1 of location
+ * @param longitude1 of location
+ * @return distance
+ */
 double Airport::distance(double latitude1, double longitude1) const {
     double dLat = (latitude1 - latitude) *
                   M_PI / 180.0;

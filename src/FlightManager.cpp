@@ -642,7 +642,11 @@ void FlightManager::askForOtherInfo(){
         }
     }
 }
-
+/**
+ * Calculates and prints the number of countries that are reachable by plane.
+ *
+ * Complexity : O(|V|) where |V| is the cardinality of set of airports.
+ */
 void FlightManager::numberOfCountries(){
     cout << "These are the countries reachable by plane:";
     unordered_set<string> unique_countries;
@@ -672,7 +676,11 @@ void FlightManager::numberOfCities(){
 void FlightManager::numberOfFlights(){
     cout << "There are " << flights.getNumFlightsTotal() << " flights in the database!\n";
 }
-
+/**
+ * Calculates and prints the average amount of airports per country.
+ *
+ * Complexity : O(|V|) where |V| is the cardinality of set of airports.
+ */
 void FlightManager::averageAirportsByCountry(){
     unordered_set<string> unique_countries;
     for (auto& x : airports){
@@ -684,6 +692,11 @@ void FlightManager::averageAirportsByCountry(){
     cout << "The average number of airports in a country is: " << average << "\n";
 }
 
+/**
+ * Calculates and prints the airport with the most flights.
+ *
+ * Complexity : O(|V|*(|V|+|E|)) where |V| and |E| are the number of airports and flights respectively.
+ */
 void FlightManager::airportMostFlights(){
     int maxFlights = 0;
     int currentFlights = 0;
@@ -698,7 +711,12 @@ void FlightManager::airportMostFlights(){
     }
     cout << "The airport with the most flights is " << maxAirport << " with " << maxFlights << " flights either arriving or leaving it" << "\n";
 }
-
+/**
+ * Calculates the airline with the most amount of flights of the network of flights and shows the result on the standard
+ * output.
+ *
+ * Complexity : O(|V|*(|V|+|E|)) where |V| and |E| are the number of airports and flights respectively.
+ */
 void FlightManager::airportMostAirlines(){
     int maxAirlines = 0;
     int currentAirlines = 0;
@@ -713,12 +731,18 @@ void FlightManager::airportMostAirlines(){
     }
     cout << "The airport with the most airlines is " << maxAirport << " with flights from " << maxAirlines << " airlines either arriving or leaving it" << "\n";
 }
-
+/**
+ * Prints the diameter of the graph.
+ */
 void FlightManager::diameter(){
     pair<pair<string, string>, int> diameter = flights.diameter();
 
     cout << "The diameter of the graph is " << diameter.second << ", the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport.\n\n";
 }
+
+/**
+ * Prints the airports which are articulation points on the graph and the amount of said articulation points.
+ */
 void FlightManager::articulationPoints() {
     list<int> articulationPoints = flights.articulationPoints();
     cout << "\nHere they are: \n";
@@ -851,9 +875,3 @@ void FlightManager::showBestTrajectories(const list<int>& s, const list<int>& d,
         if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N") break;
     }
 }
-
-/*bool FlightManager::existPath(int v, int k) {
-    return flights.existPath(v, k);
-}*/
-
-
