@@ -88,15 +88,16 @@ public:
     list<string> getAirportsReachable(int v, int f);
 
     list<list<string>> calculateBestTrajectory(const list<int>& startup,const list <int>& end,const list<string>& airlines);
-    list<list<string>> calculateAllPossibleTrajectories(int numberOfFlights, const list<int>& startup,const list <int>& end,const list<string>& airlines);
-
+    bool existPath(int v, int k);
+    void showPath (int v1, int v2);
+    list<int> dfsShow(int v);
     string getAirline(int a , int b , list<string> air);
-
     int getNumFlightsTotal();
 
     int getNumFlightsAirport(string code);
 
     pair<pair<std::string, std::string>, int> diameter();
+    // show articulation points
 };
 
 #endif
