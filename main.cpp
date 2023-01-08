@@ -36,6 +36,7 @@ int main() {
                 h.askForOtherInfo();
                 break;
             case 4:
+                cout << "\nGOOD FLIGHT! ENJOY YOUR TRIP!" << endl;
                 keepRunning = false;
                 break;
             default:
@@ -48,13 +49,13 @@ int main() {
 //-----------------------Menus-----------------------------------
 
 void showMenu(){
-    cout << "=======================\n";
-    cout << "| Menu :              |\n";
-    cout << "| 1- Best Trajectory  |\n";
-    cout << "| 2- Airport Info     |\n";
-    cout << "| 3- Other Info       |\n";
-    cout << "| 4- Quit             |\n";
-    cout << "=======================\n";
+    cout << "=========================\n";
+    cout << "| Menu :                |\n";
+    cout << "| 1- Best Trajectory    |\n";
+    cout << "| 2- Airport Info       |\n";
+    cout << "| 3- Other Info         |\n";
+    cout << "| 4- Quit               |\n";
+    cout << "=========================\n";
     cout << "Pick an option:";
 }
 

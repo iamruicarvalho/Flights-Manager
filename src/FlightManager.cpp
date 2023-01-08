@@ -622,6 +622,9 @@ void FlightManager::askForOtherInfo(){
                 diameter();
                 break;
             case 7:
+                articulationPoints();
+                break;
+            case 8:
                 KeepRunning = false;
                 break;
             default:
@@ -690,7 +693,16 @@ void FlightManager::airportMostFlights(){
 void FlightManager::diameter(){
     pair<pair<string, string>, int> diameter = flights.diameter();
 
-    cout << "The diameter of the graph is " << diameter.second << " , the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport\n";
+    cout << "The diameter of the graph is " << diameter.second << ", the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport.\n\n";
+}
+void FlightManager::articulationPoints() {
+    list<int> articulationPoints = flights.articulationPoints();
+    cout << "\nHere they are: \n";
+    articulationPoints.sort();
+    for (int i : articulationPoints) {
+        cout << flights.getAirport(i) << "| " << airports.find(flights.getAirport(i))->getName() << '\n'; //flights.getAirport(i);
+    }
+    cout << "There are " << articulationPoints.size() << " articulation points.\n\n";
 }
 
 //------------------------Menus-------------------------------
@@ -761,7 +773,8 @@ void FlightManager::askForOtherInfoMenu(){
     cout << "| 4- Avg number of Airports in a Country |\n";
     cout << "| 5- Airport with the most flights       |\n";
     cout << "| 6- Diameter of the graph               |\n";
-    cout << "| 7- Go back                             |\n";
+    cout << "| 7- Articulation Points                 |\n";
+    cout << "| 8- Go back                             |\n";
     cout << "==========================================\n";
     cout << "Pick an option:";
 }
@@ -813,5 +826,9 @@ void FlightManager::showBestTrajectories(const list<int>& s, const list<int>& d,
         if (answer == "no" || answer == "No" || answer == "NO" || answer == "n" || answer == "N") break;
     }
 }
+
+/*bool FlightManager::existPath(int v, int k) {
+    return flights.existPath(v, k);
+}*/
 
 

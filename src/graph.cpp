@@ -2,6 +2,7 @@
 // Pedro Ribeiro (DCC/FCUP) [last update: 27/11/2022]
 
 #include "graph.h"
+#include "Airport.h"
 
 // Constructor: nr nodes and direction (default: undirected)
 Graph::Graph(int num, bool dir) : n(num), hasDir(dir), nodes(num+1) {
@@ -27,13 +28,27 @@ void Graph::addEdge(int src, int dest, const string& airline , int weight) {
  */
 void Graph::dfs(int v) {
     // show node order
-    cout << v << " ";
+    // cout << v << " ";
     nodes[v].visited = true;
     for (const auto& e : nodes[v].adj) {
         int w = e.dest;
         if (!nodes[w].visited)
             dfs(w);
     }
+}
+list<int> Graph::dfsShow(int v) {
+    list<int> res;
+    // show node order
+    cout << nodes[v].airport << " ";
+    nodes[v].visited = true;
+    for (auto e : nodes[v].adj) {
+        int w = e.dest;
+        if (!nodes[w].visited) {
+            res.push_back(w);
+            dfs(w);
+        }
+    }
+    return res;
 }
 
 /**
@@ -270,54 +285,76 @@ string Graph::getAirline(int a, int b, list<string> air) {
     return {};
 }
 
-list<list<string>> Graph::calculateAllPossibleTrajectories(int numberOfFlights, const list<int>& startup,const list <int>& end,const list<string>& airlines) {
-    // show node order
-    /*cout << v << " ";
-    nodes[v].visited = true;
-    for (auto e : nodes[v].adj) {
-        int w = e.dest;
-        if (!nodes[w].visited)
-            dfs(w);
-    }*/
-
-    /*
-     * fazer dfs e ver se existe um caminho entre inicio e fim cujo numero maximo de aeroportos a visitar seja o introduzido pelo user
-     */
-    list<list<int>> startupList;
-    for (int s : startup) {
-        list<int> temp;
-        temp.push_back(s);
-        startupList.push_back(temp);
-        nodes[s].visited = true;
-        nodes[s].distance = 0;
+/*
+bool Graph::existPath(int v, int k) {
+    for (Node node : nodes) {
+        node.visited = false;
     }
-    list<list<int>> res;                // need to ask for number of airports to visit
-
-    list<int> nodesList = startupList.front();
-    int k = nodesList.back();
-    nodes[k].visited = true;
-    nodes[k].distance = 0;
-    for (Edge e : nodes[k].adj) {
-        int w = e.dest;
-        if (!nodes[w].visited && (airlines.empty() || find(airlines.begin(), airlines.end(), e.airline) != airlines.end())) {
-            if (find(end.begin(), end.end(), w) != end.end()) {
-                calculateAllPossibleTrajectories(n, startup, end, airlines);
-                nodes[w].distance = nodes[k].distance + 1;
-            }
-        }
-    }
-    int count = 0;
-    for (int s : startup) {
-        for (int v = 1; v <= n; v++) {
-            if ((nodes[v].distance - nodes[s].distance) == numberOfFlights) {
-                // try to make a function that returns all paths between two nodes as a vector of lists of nodes(airports)
-                // then, for each list in the vector, print the airports in the list
-            }
-        }
-    }
+    dfs(v);
+    if (nodes[k].visited)
+        return true;
+    return false;
 }
 
+void Graph::showPath(int orig, int dest) {
+    // Airport origin = getAirport(orig);
+    // Airport destiny = getAirport(dest);
+    if (existPath(orig, dest)) {
+        dfsShow(orig);
+    }
+}*/
 
+/**
+ * Auxiliar function that helps to calculate the articulation points
+ * @param v
+ * @param order
+ * @param l
+ */
+void Graph::dfs_articulation_points(int v, int &order, list<int> &l) {
+    nodes[v].visited = true;
+    nodes[v].num = nodes[v].low = order++;
+
+    int children = 0;
+    bool articulation = false;
+
+    for (Edge e : nodes[v].adj) {
+        int w = e.dest;
+        if (!nodes[w].visited) {
+            children++;
+            dfs_articulation_points(w, order, l);
+            nodes[v].low = min(nodes[v].low, nodes[w].low);
+            if (nodes[w].low >= nodes[v].num)
+                articulation = true;            // v is an articulation point
+        }
+        else
+            nodes[v].low = min(nodes[v].low, nodes[w].num);
+    }
+
+    // if it is the root node (root.num = 1), it has to have more than 1 child or ...
+    if ((nodes[v].num == 1 && children > 1) || (nodes[v].num > 1 && articulation))
+        l.push_front(v);
+}
+/**
+ * Function that calculates articulation points
+ * @return list of articulation points
+ */
+list<int> Graph::articulationPoints() {
+    list<int> answer;
+    for (Node node : nodes) {
+        node.visited = false;
+        node.inStack = false;
+        node.num = 0;
+        node.low = 0;
+    }
+
+    int order = 1;
+    for (int v = 1; v <= n; v++) {
+        if (!nodes[v].visited) {
+            dfs_articulation_points(v, order, answer);
+        }
+    }
+    return answer;
+}
 
 
 
