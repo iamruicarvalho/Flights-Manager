@@ -59,6 +59,12 @@ void Graph::bfs(int v) {
     }
 }
 
+/**
+ * Calculates the diameter of the graph.
+ *
+ * Complexity : O(|V|*(|V|+|E|)) where |V| and |E| is the cardinality of set of vertices and edges respectively.
+ * @return diameter
+ */
 pair<pair<string ,string >, int> Graph::diameter() {
     int max_dist = 0;
     string startingAirport;
@@ -124,6 +130,12 @@ string Graph::getAirport(int v) {
     return nodes[v].airport;
 }
 
+/**
+ * Calculates and returns the number of edges on the graph, that is the total number of flights.
+ *
+ * Complexity : O(|V|) where |V| is the cardinality of set of vertices.
+ * @return number of flights
+ */
 int Graph::getNumFlightsTotal(){
     int count = 0;
     for(auto& x : nodes){
@@ -132,6 +144,13 @@ int Graph::getNumFlightsTotal(){
     return count;
 }
 
+/**
+ * Calculates the number of flights that go to and leave airport v.
+ *
+ * Complexity : O(|V| + |E|) where |V| and |E| is the cardinality of set of vertices and edges respectively.
+ * @param v node of airport
+ * @return number of flights on airport v
+ */
 int Graph::getNumFlightsAirport(int v){
     int count = 0;
     count += nodes[v].adj.size();
