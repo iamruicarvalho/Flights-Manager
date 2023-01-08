@@ -693,7 +693,7 @@ void FlightManager::airportMostFlights(){
 void FlightManager::diameter(){
     pair<pair<string, string>, int> diameter = flights.diameter();
 
-    cout << "The diameter of the graph is " << diameter.second << " , the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport\n";
+    cout << "The diameter of the graph is " << diameter.second << ", the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport.\n\n";
 }
 void FlightManager::articulationPoints() {
     list<int> articulationPoints = flights.articulationPoints();

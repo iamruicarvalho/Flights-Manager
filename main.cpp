@@ -36,6 +36,7 @@ int main() {
                 h.askForOtherInfo();
                 break;
             case 4:
+                cout << "\nGOOD FLIGHT! ENJOY YOUR TRIP!" << endl;
                 keepRunning = false;
                 break;
             default:
