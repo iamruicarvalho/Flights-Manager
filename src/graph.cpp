@@ -34,20 +34,6 @@ void Graph::dfs(int v) {
             dfs(w);
     }
 }
-list<int> Graph::dfsShow(int v) {
-    list<int> res;
-    // show node order
-    cout << nodes[v].airport << " ";
-    nodes[v].visited = true;
-    for (auto e : nodes[v].adj) {
-        int w = e.dest;
-        if (!nodes[w].visited) {
-            res.push_back(w);
-            dfs(w);
-        }
-    }
-    return res;
-}
 
 /**
  * Breadth-First Search: example implementation
@@ -304,27 +290,10 @@ string Graph::getAirline(int a, int b, list<string> air) {
     return {};
 }
 
-/*
-bool Graph::existPath(int v, int k) {
-    for (Node node : nodes) {
-        node.visited = false;
-    }
-    dfs(v);
-    if (nodes[k].visited)
-        return true;
-    return false;
-}
-
-void Graph::showPath(int orig, int dest) {
-    // Airport origin = getAirport(orig);
-    // Airport destiny = getAirport(dest);
-    if (existPath(orig, dest)) {
-        dfsShow(orig);
-    }
-}*/
-
 /**
- * Auxiliary function that helps to calculate the articulation points
+ * Auxiliary function that helps to calculate the articulation points.
+ *
+ * Complexity : O(|V|+|E|) where |V| and |E| is the cardinality of set of vertices and edges respectively
  * @param v
  * @param order
  * @param l
@@ -354,7 +323,9 @@ void Graph::dfs_articulation_points(int v, int &order, list<int> &l) {
         l.push_front(v);
 }
 /**
- * Function that calculates articulation points
+ * Function that calculates articulation points.
+ *
+ * Complexity : O(|V| + |E|) where |V| and |E| is the set of cardinality of vertices and edges respectively.
  * @return list of articulation points
  */
 list<int> Graph::articulationPoints() {

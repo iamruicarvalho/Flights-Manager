@@ -75,7 +75,6 @@ public:
     void airportMostFlights();
     void diameter();
     void articulationPoints();
-
     void airportMostAirlines();
 };
 

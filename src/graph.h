@@ -39,7 +39,11 @@ class Graph {
     vector<Node> nodes; // The list of nodes being represented
 
 public:
-    // Constructor: nr nodes and direction (default: undirected)
+    /**
+     * Constructor : nr nodes and direction (Default : undirected)
+     * @param nodes
+     * @param dir
+     */
     Graph(int nodes, bool dir = false);
 
     /**
@@ -50,35 +54,19 @@ public:
      * @param weight
      */
     void addEdge(int src, int dest,const string& airline, int weight = 1);
-
-
     void dfs(int v);
-
-
     void bfs(int v);
-
     void setAirport(int v , const string& airport);
-
-
     list<pair<int , string>> getFlights(int node);
-
     string getAirport(int v);
-
     list<string> getAirportsReachable(int v, int f);
-
     list<list<string>> calculateBestTrajectory(const list<int>& startup,const list <int>& end,const list<string>& airlines);
-    // bool existPath(int v, int k);
-    // void showPath (int v1, int v2);
-    list<int> dfsShow(int v);
     string getAirline(int a , int b , list<string> air);
     int getNumFlightsTotal();
-
     int getNumFlightsAirport(int v);
-
     pair<pair<std::string, std::string>, int> diameter();
     list<int> articulationPoints();
     void dfs_articulation_points(int v, int &order, li &l);
-    // show distance between two airports
     int getNumAirlinesAirport(int v);
 };
 
