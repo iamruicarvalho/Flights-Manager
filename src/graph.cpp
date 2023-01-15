@@ -346,9 +346,3 @@ list<int> Graph::articulationPoints() {
     return answer;
 }
 
-
-
-
-
-
-
