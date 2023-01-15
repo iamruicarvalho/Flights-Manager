@@ -687,7 +687,7 @@ void FlightManager::averageAirportsByCountry(){
         if (unique_countries.find(x.getCountry()) == unique_countries.end())
             unique_countries.insert(x.getCountry());
     }
-    float average = airports.size() / unique_countries.size();
+    float average = (float) airports.size() / unique_countries.size();
 
     cout << "The average number of airports in a country is: " << average << "\n";
 }
@@ -737,7 +737,7 @@ void FlightManager::airportMostAirlines(){
 void FlightManager::diameter(){
     pair<pair<string, string>, int> diameter = flights.diameter();
 
-    cout << "The diameter of the graph is " << diameter.second << ", the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport.\n\n";
+    cout << "The diameter of the graph is " << diameter.second << ", the starting flight is from " << airports.find(diameter.first.first)->getName() << " airport \nand the last flight lands in " << airports.find(diameter.first.second)->getName() << " airport.\n";
 }
 
 /**
@@ -820,7 +820,7 @@ void FlightManager::askForOtherInfoMenu(){
     cout << "| 3- Number of Flights                   |\n";
     cout << "| 4- Avg number of Airports in a Country |\n";
     cout << "| 5- Airport with the most flights       |\n";
-    cout << "| 6- Airport with the most airlines     |\n";
+    cout << "| 6- Airport with the most airlines      |\n";
     cout << "| 7- Diameter of the graph               |\n";
     cout << "| 8- Articulation Points                 |\n";
     cout << "| 9- Go back                             |\n";
